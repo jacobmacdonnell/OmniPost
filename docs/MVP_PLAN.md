@@ -10,135 +10,135 @@ This document outlines the detailed steps to **build the OmniPost.ai Minimum Via
 
 ## Phase 1: Configure OpenAI API Key
 
-- [ ] ### 1.1 Obtain an OpenAI API Key
-    - [ ] Go to the OpenAI API website: [https://platform.openai.com/](https://platform.openai.com/)
-    - [ ] Sign up or log in to your OpenAI account.
-    - [ ] Navigate to "API keys" (usually found under your profile icon in the top right, then select "API keys").
-    - [ ] Click "Create new secret key."
-    - [ ] **Immediately copy the generated API key** to a secure location (e.g., a temporary text file, password manager). This key will only be shown once upon creation.
+- [x] ### 1.1 Obtain an OpenAI API Key
+    - [x] Go to the OpenAI API website: [https://platform.openai.com/](https://platform.openai.com/)
+    - [x] Sign up or log in to your OpenAI account.
+    - [x] Navigate to "API keys" (usually found under your profile icon in the top right, then select "API keys").
+    - [x] Click "Create new secret key."
+    - [x] **Immediately copy the generated API key** to a secure location (e.g., a temporary text file, password manager). This key will only be shown once upon creation.
 
-- [ ] ### 1.2 Add OpenAI Credentials to n8n
-    - [ ] In the n8n UI (`http://localhost:5678`), click on **"Credentials"** in the left sidebar.
-    - [ ] Click "New Credential" in the top right.
-    - [ ] Search for "OpenAI API" and select it from the list.
-    - [ ] Paste your copied OpenAI API key into the "API Key" field.
-    - [ ] Enter a descriptive name for your credential (e.g., "OmniPost OpenAI Key").
-    - [ ] Click "Save".
-    - [ ] **Note:** Credentials are saved within your n8n Docker volume (`n8n_data`) on the specific machine you are using. You will need to add them to your n8n instance manually on *each* machine you develop on, as they are not part of the workflow JSON and are not synced via Git.
+- [x] ### 1.2 Add OpenAI Credentials to n8n
+    - [x] In the n8n UI (`http://localhost:5678`), click on **"Credentials"** in the left sidebar.
+    - [x] Click "New Credential" in the top right.
+    - [x] Search for "OpenAI API" and select it from the list.
+    - [x] Paste your copied OpenAI API key into the "API Key" field.
+    - [x] Enter a descriptive name for your credential (e.g., "OmniPost OpenAI Key").
+    - [x] Click "Save".
+    - [x] **Note:** Credentials are saved within your n8n Docker volume (`n8n_data`) on the specific machine you are using. You will need to add them to your n8n instance manually on *each* machine you develop on, as they are not part of the workflow JSON and are not synced via Git.
 
 ---
 
 ## Phase 2: Create and Version Control the n8n Automation Workflow
 
-- [ ] ### 2.1 Create a New Workflow
-    - [ ] In the n8n UI, click on **"Workflows"** in the left sidebar.
-    - [ ] Click "New Workflow" in the top right.
+- [x] ### 2.1 Create a New Workflow
+    - [x] In the n8n UI, click on **"Workflows"** in the left sidebar.
+    - [x] Click "New Workflow" in the top right.
 
-- [ ] ### 2.2 Add a Webhook Trigger Node
-    - [ ] Click the "+" button (or press `Spacebar`) on the workflow canvas to add a new node.
-    - [ ] Search for "Webhook" and select the **"Webhook"** trigger node.
-    - [ ] Configure Webhook Node Parameters (right panel):
-        -   **Webhook URLs:** Locate the "Test Webhook URL" and **copy it**. Keep this URL handy for the next testing step.
-        -   **HTTP Method:** Select `POST`.
-        -   **Response Mode:** Select `Last Node`.
-    - [ ] Click the "Execute Workflow" button (the small play icon) on the Webhook node itself. This puts the webhook in "listening" mode for a test.
+- [x] ### 2.2 Add a Webhook Trigger Node
+    - [x] Click the "+" button (or press `Spacebar`) on the workflow canvas to add a new node.
+    - [x] Search for "Webhook" and select the **"Webhook"** trigger node.
+    - [x] Configure Webhook Node Parameters (right panel):
+        - [x] **Webhook URLs:** Locate the "Test Webhook URL" and **copy it**. Keep this URL handy for the next testing step.
+        - [x] **HTTP Method:** Select `POST`.
+        - [x] **Response Mode:** Select `Last Node`.
+    - [x] Click the "Execute Workflow" button (the small play icon) on the Webhook node itself. This puts the webhook in "listening" mode for a test.
 
-- [ ] ### 2.3 Add a Set Node (Prepare Input)
-    - [ ] Connect a new node from the output handle of the Webhook node (drag a line from its right circle).
-    - [ ] Search for "Set" and select the **"Set"** node (found under the "Core" section).
-    - [ ] Configure Set Node Parameters:
-        -   **Mode:** Select `JSON`.
-        -   **JSON editor:** Delete any default content in the large text area.
-        -   **Paste the following JSON structure:**
+- [x] ### 2.3 Add a Set Node (Prepare Input)
+    - [x] Connect a new node from the output handle of the Webhook node (drag a line from its right circle).
+    - [x] Search for "Set" and select the **"Set"** node (found under the "Core" section).
+    - [x] Configure Set Node Parameters:
+        - [x] **Mode:** Select `JSON`.
+        - [x] **JSON editor:** Delete any default content in the large text area.
+        - [x] **Paste the following JSON structure:**
             ```json
             {
               "longFormContent": "{{ $json.body.content }}"
             }
             ```
-        -   This step extracts the `content` from the incoming webhook body and assigns it to a variable called `longFormContent`.
+        - [x] This step extracts the `content` from the incoming webhook body and assigns it to a variable called `longFormContent`.
 
-- [ ] ### 2.4 Test the Webhook (Optional, but Recommended for verification): ✅
-    - [ ] Open a NEW `bash` terminal window (do not close the one running n8n).
-    - [ ] Ensure you are in your project root (`omnipost-mvp`).
-    - [ ] Run the following `curl` command to send a test request to your webhook:
-        -   **Replace `YOUR_TEST_WEBHOOK_URL_HERE`** with the exact Test Webhook URL you copied from the Webhook node in step 2.2.
+- [x] ### 2.4 Test the Webhook (Optional, but Recommended for verification):
+    - [x] Open a NEW `bash` terminal window (do not close the one running n8n).
+    - [x] Ensure you are in your project root (`omnipost-mvp`).
+    - [x] Run the following `curl` command to send a test request to your webhook:
+        - [x] **Replace `YOUR_TEST_WEBHOOK_URL_HERE`** with the exact Test Webhook URL you copied from the Webhook node in step 2.2.
         ```bash
-        curl -X POST YOUR_TEST_WEBHOOK_URL_HERE \
-        -H "Content-Type: application/json" \
-        -d '{
+        curl -X POST YOUR_TEST_WEBHOOK_URL_HERE \\
+        -H "Content-Type: application/json" \\
+        -d '{ 
           "content": "This is a test long-form content that needs to be summarized and turned into social media posts for Twitter, LinkedIn, and Instagram. It contains various details about modern AI applications and their impact on daily life."
         }'
         ```
-    - [ ] Verify in n8n UI:
-        -   [ ] Confirm the Webhook node shows successful execution (a green checkmark and output data).
-        -   [ ] Confirm the Set node also shows successful execution.
-        -   [ ] Inspect Output: Click the Set node and check its "Output" tab in the right panel to ensure `longFormContent` is populated with the test content you sent.
+    - [x] Verify in n8n UI:
+        - [x] Confirm the Webhook node shows successful execution (a green checkmark and output data).
+        - [x] Confirm the Set node also shows successful execution.
+        - [x] Inspect Output: Click the Set node and check its "Output" tab in the right panel to ensure `longFormContent` is populated with the test content you sent.
 
-- [ ] ### 2.5 Add OpenAI Chat Model Node (for Twitter)
-    - [ ] Connect a new node from the output of the **Set node**.
-    - [ ] Search for "OpenAI" and select the **"OpenAI Chat Model"** node.
-    - [ ] Configure OpenAI Chat Model Node Parameters:
-        -   **Authentication:** Select your previously created OpenAI credential (e.g., "OmniPost OpenAI Key").
-        -   **Model:** Select `gpt-4o` (or `gpt-3.5-turbo` for potentially faster/cheaper testing during development).
-        -   **Locate the "Messages" section:** This is a direct parameter field, usually a large box, below "Model" and any "Options". It often has an "Add Item" button within it.
-        -   [ ] Click the "Add Item" button *within the "Messages" section*.
-        -   **Configure the first message (System role):**
-            -   **Type:** Select `System`.
-            -   **Content:** Paste the following prompt:
+- [x] ### 2.5 Add OpenAI 'Message Model' Node (for Twitter)
+    - [x] Connect a new node from the output of the **Set node**.
+    - [x] Search for "OpenAI" and select the **"OpenAI Chat Model"** node.
+    - [x] Configure OpenAI Chat Model Node Parameters:
+        - [x] **Authentication:** Select your previously created OpenAI credential (e.g., "OmniPost OpenAI Key").
+        - [x] **Model:** Select `gpt-4o` (or `gpt-3.5-turbo` for potentially faster/cheaper testing during development).
+        - [x] **Locate the "Messages" section:** This is a direct parameter field, usually a large box, below "Model" and any "Options". It often has an "Add Item" button within it.
+        - [x] Click the "Add Item" button *within the "Messages" section*.
+        - [x] **Configure the first message (System role):**
+            - [x] **Type:** Select `System`.
+            - [x] **Content:** Paste the following prompt:
                 ```
                 You are a highly skilled social media manager. Your task is to transform long-form content into concise, engaging social media posts tailored for Twitter. Aim for 1-3 short, impactful tweets. Use relevant hashtags and emojis.
                 ```
-        -   [ ] Click "Add Item" again *within the "Messages" section*.
-        -   **Configure the second message (User role):**
-            -   **Type:** Select `User`.
-            -   **Content:** Click the "gear" icon next to the content field and select `Nodes` -> `Set` -> `Output Data` -> `JSON` -> `longFormContent`. This dynamically inserts the content from your Set node.
-        -   **Output Parameters:**
-            -   **Output Property:** Type `twitterPost`. This will store the AI's response under this key.
-    - [ ] Click the "Execute Node" button on this OpenAI node to test its output. Verify that a Twitter-style post is generated.
+        - [x] Click the "Add Item" again *within the "Messages" section*.
+        - [x] **Configure the second message (User role):**
+            - [x] **Type:** Select `User`.
+            - [x] **Content:** Click the "gear" icon next to the content field and select `Nodes` -> `Set` -> `Output Data` -> `JSON` -> `longFormContent`. This dynamically inserts the content from your Set node.
+        - [ ] **Output Parameters:**
+            - [ ] **Note:** The AI's response will be available in the node's output at the path `choices[0].message.content`. The Merge node later will need to reference this path.
+    - [x] Click the "Execute Node" button on this OpenAI node to test its output. Verify that a Twitter-style post is generated.
 
-- [ ] ### 2.6 Add OpenAI Chat Model Node (for LinkedIn)
-    - [ ] Connect a new node from the output of the **original Set node** (this creates a second branch from the Set node, running in parallel with the Twitter branch).
-    - [ ] Search for "OpenAI" and select the **"OpenAI Chat Model"** node.
-    - [ ] Configure OpenAI Chat Model Node Parameters:
-        -   **Authentication:** Select your OpenAI credential.
-        -   **Model:** Select `gpt-4o`.
-        -   **Locate the "Messages" section.**
-        -   [ ] Click the "Add Item" button *within the "Messages" section*.
-        -   **Configure the first message (System role):**
-            -   **Type:** Select `System`.
-            -   **Content:** Paste the following prompt:
+- [x] ### 2.6 Add OpenAI 'Message Model' (for LinkedIn)
+    - [x] Connect a new node from the output of the **original Set node** (this creates a second branch from the Set node, running in parallel with the Twitter branch).
+    - [x] Search for "OpenAI" and select the **"OpenAI Chat Model"** node.
+    - [x] Configure OpenAI Chat Model Node Parameters:
+        -   [x] **Authentication:** Select your OpenAI credential.
+        -   [x] **Model:** Select `gpt-4o`.
+        -   [x] **Locate the "Messages" section.**
+        -   [x] Click the "Add Item" button *within the "Messages" section*.
+        -   [x] **Configure the first message (System role):**
+            -   [x] **Type:** Select `System`.
+            -   [x] **Content:** Paste the following prompt:
                 ```
                 You are a highly skilled social media manager. Your task is to transform long-form content into a professional and insightful LinkedIn post. Focus on business insights, value, and thought leadership. Include relevant hashtags.
                 ```
-        -   [ ] Click "Add Item" again *within the "Messages" section*.
-        -   **Configure the second message (User role):**
-            -   **Type:** Select `User`.
-            -   **Content:** Click the "gear" icon and select `Nodes` -> `Set` -> `Output Data` -> `JSON` -> `longFormContent`.
-        -   **Output Parameters:**
-            -   **Output Property:** Type `linkedinPost`.
-    - [ ] Click the "Execute Node" button on this OpenAI node to test its output. Verify a LinkedIn-style post.
+        -   [x] Click "Add Item" again *within the "Messages" section*.
+        -   [x] **Configure the second message (User role):**
+            -   [x] **Type:** Select `User`.
+            -   [x] **Content:** Click the "gear" icon and select `Nodes` -> `Set` -> `Output Data` -> `JSON` -> `longFormContent`.
+        -   [x] **Output Parameters:**
+            -   [x] **Note:** The AI's response will be available in the node's output at the path `choices[0].message.content`.
+    - [x] Click the "Execute Node" button on this OpenAI node to test its output. Verify a LinkedIn-style post.
 
-- [ ] ### 2.7 Add OpenAI Chat Model Node (for Instagram)
-    - [ ] Connect a new node from the output of the **original Set node** (creating a third parallel branch).
-    - [ ] Search for "OpenAI" and select the **"OpenAI Chat Model"** node.
-    - [ ] Configure OpenAI Chat Model Node Parameters:
-        -   **Authentication:** Select your OpenAI credential.
-        -   **Model:** Select `gpt-4o`.
-        -   **Locate the "Messages" section.**
-        -   [ ] Click the "Add Item" button *within the "Messages" section*.
-        -   **Configure the first message (System role):**
-            -   **Type:** Select `System`.
-            -   **Content:** Paste the following prompt:
+- [x] ### 2.7 Add OpenAI 'Message Model' Node (for Instagram)
+    - [x] Connect a new node from the output of the **original Set node** (creating a third parallel branch).
+    - [x] Search for "OpenAI" and select the **"OpenAI Chat Model"** node.
+    - [x] Configure OpenAI Chat Model Node Parameters:
+        -   [x] **Authentication:** Select your OpenAI credential.
+        -   [x] **Model:** Select `gpt-4o`.
+        -   [x] **Locate the "Messages" section.**
+        -   [x] Click the "Add Item" button *within the "Messages" section*.
+        -   [x] **Configure the first message (System role):**
+            -   [x] **Type:** Select `System`.
+            -   [x] **Content:** Paste the following prompt:
                 ```
                 You are a highly skilled social media manager. Your task is to transform long-form content into a compelling and concise Instagram caption. Focus on visual appeal, strong hooks, and relevant hashtags. (Note: Image generation is out of scope for MVP).
                 ```
-        -   [ ] Click "Add Item" again *within the "Messages" section*.
-        -   **Configure the second message (User role):**
-            -   **Type:** Select `User`.
-            -   **Content:** Click the "gear" icon and select `Nodes` -> `Set` -> `Output Data` -> `JSON` -> `longFormContent`.
-        -   **Output Parameters:**
-            -   **Output Property:** Type `instagramPost`.
-    - [ ] Click the "Execute Node" button on this OpenAI node to test its output. Verify an Instagram-style caption.
+        -   [x] Click "Add Item" again *within the "Messages" section*.
+        -   [x] **Configure the second message (User role):**
+            -   [x] **Type:** Select `User`.
+            -   [x] **Content:** Click the "gear" icon and select `Nodes` -> `Set` -> `Output Data` -> `JSON` -> `longFormContent`.
+        -   [x] **Output Parameters:**
+            -   [x] **Note:** The AI's response will be available in the node's output at the path `choices[0].message.content`.
+    - [x] Click the "Execute Node" button on this OpenAI node to test its output. Verify an Instagram-style caption.
 
 - [ ] ### 2.8 Add a Merge Node
     - [ ] Add a new node to your workflow.
@@ -150,7 +150,7 @@ This document outlines the detailed steps to **build the OmniPost.ai Minimum Via
         -   **Property Name:** You can leave this as `Combine All` or rename if desired (e.g., `generatedPosts`).
         -   **Remove Duplicate Keys:** Ensure this checkbox is selected.
     - [ ] Click the "Execute Node" button on the Merge node to test.
-        -   [ ] Confirm that all three generated posts (`twitterPost`, `linkedinPost`, `instagramPost`) are now merged into a single JSON object under the `output` key (or your custom `Property Name`) in the Merge node's output. This is the final JSON structure your frontend will receive.
+        -   [ ] Confirm that all three generated posts (from `choices[0].message.content` of each OpenAI node) are now merged into a single JSON object under the `output` key (or your custom `Property Name`) in the Merge node's output. This is the final JSON structure your frontend will receive.
 
 - [ ] ### 2.9 Activate the Workflow
     - [ ] In the top right corner of the n8n workflow editor, toggle the **"Active"** switch to `On`.

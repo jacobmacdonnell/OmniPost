@@ -1,0 +1,209 @@
+{
+  "name": "OmniPost",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "f87b6abd-a9ad-4cac-9606-02ba20218718",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -360,
+        -60
+      ],
+      "id": "659a6a1e-25d6-4c61-ac9d-b308ed056f24",
+      "name": "Webhook",
+      "webhookId": "f87b6abd-a9ad-4cac-9606-02ba20218718"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "=            {\n              \"longFormContent\": \"{{ $json.body.content }}\"\n            }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -240,
+        -60
+      ],
+      "id": "0c7bacc6-f9f9-4be7-aaab-eda6804be9e7",
+      "name": "Edit Fields",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are a highly skilled social media manager. Your task is to transform long-form content into concise, engaging social media posts tailored for Twitter. Aim for 1-3 short, impactful tweets. Use relevant hashtags and emojis.",
+              "role": "system"
+            },
+            {
+              "content": "={{ $json.longFormContent }}"
+            }
+          ]
+        },
+        "simplify": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -120,
+        -60
+      ],
+      "id": "b929523d-6ec3-40be-8e83-fd5e460a0249",
+      "name": "OpenAI - Twitter",
+      "alwaysOutputData": false,
+      "credentials": {
+        "openAiApi": {
+          "id": "T1zGEMiMAgCMOgA5",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are a highly skilled social media manager. Your task is to transform long-form content into a professional and insightful LinkedIn post. Focus on business insights, value, and thought leadership. Include relevant hashtags.",
+              "role": "system"
+            },
+            {
+              "content": "={{ $('Edit Fields').item.json.longFormContent }}"
+            }
+          ]
+        },
+        "simplify": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        160,
+        -60
+      ],
+      "id": "95ff35e8-aa0a-4afa-af28-0c727629e317",
+      "name": "OpenAI - Linkedin",
+      "credentials": {
+        "openAiApi": {
+          "id": "T1zGEMiMAgCMOgA5",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are a highly skilled social media manager. Your task is to transform long-form content into a compelling and concise Instagram caption. Focus on visual appeal, strong hooks, and relevant hashtags.",
+              "role": "system"
+            },
+            {
+              "content": "={{ $('Edit Fields').item.json.longFormContent }}"
+            }
+          ]
+        },
+        "simplify": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        440,
+        -60
+      ],
+      "id": "255eba1c-07bf-4f38-aefc-59c1da332db2",
+      "name": "OpenAI - Instagram",
+      "credentials": {
+        "openAiApi": {
+          "id": "T1zGEMiMAgCMOgA5",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "OpenAI - Twitter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI - Twitter": {
+      "main": [
+        [
+          {
+            "node": "OpenAI - Linkedin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI - Linkedin": {
+      "main": [
+        [
+          {
+            "node": "OpenAI - Instagram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": -1
+  },
+  "versionId": "30652e6f-9ebb-4b6f-bc39-7d52f4f2c1bb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ae0aee2e42c05965c8da048fc8e2eac1fe7283d21ad18b5b3ce702df4f24811f"
+  },
+  "id": "HD2beFQTSLqSCAvF",
+  "tags": []
+}
