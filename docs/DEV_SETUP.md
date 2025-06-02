@@ -14,7 +14,7 @@ Docker commands are for a command-line terminal. GitHub UI for Git.
 
 **1.1 Create n8n Data Volume**
 * Run in your terminal:
-    ```bash
+        ```bash
     docker volume create n8n_data # Persists n8n data
     ```
 * Verify: `docker volume ls` (should list `n8n_data`).

@@ -54,4 +54,9 @@ docker-compose.yml # If it contains secrets or local overrides; often committed 
 
 # OmniPost specific (examples)
 # frontend/build/ # if you have a build directory for frontend
-# reports/ # if you generate local reports 
+# reports/ # if you generate local reports
+
+# Next.js build outputs for frontend
+/frontend/.next/
+/frontend/out/
+/frontend/next-env.d.ts 
