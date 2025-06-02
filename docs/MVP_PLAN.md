@@ -59,7 +59,7 @@ This document outlines the detailed steps to **build the OmniPost.ai Minimum Via
 
 - [ ] ### 2.4 Test the Webhook (Optional, but Recommended for verification): ✅
     - [ ] Open a NEW `bash` terminal window (do not close the one running n8n).
-    - [ ] Ensure you are in your project root (`omnipost-ai-mvp`).
+    - [ ] Ensure you are in your project root (`omnipost-mvp`).
     - [ ] Run the following `curl` command to send a test request to your webhook:
         -   **Replace `YOUR_TEST_WEBHOOK_URL_HERE`** with the exact Test Webhook URL you copied from the Webhook node in step 2.2.
         ```bash
@@ -159,9 +159,9 @@ This document outlines the detailed steps to **build the OmniPost.ai Minimum Via
 - [ ] ### 2.10 Save Workflow and Commit to GitHub
     - [ ] In the n8n UI, click the three dots (`...`) next to the workflow name (or in the top right corner if it's the current workflow).
     - [ ] Select **"Download"**.
-    - [ ] **Save this `.json` file directly into your `omnipost-ai-mvp/n8n-workflows/` folder.**
+    - [ ] **Save this `.json` file directly into your `omnipost-mvp/n8n-workflows/` folder.**
         -   Name the file clearly (e.g., `omnipost_ai_generator.json`).
-    - [ ] Open your `bash` terminal and navigate to your `omnipost-ai-mvp` project root.
+    - [ ] Open your `bash` terminal and navigate to your `omnipost-mvp` project root.
     - [ ] Add the workflow file to Git:
         ```bash
         git add n8n-workflows/omnipost_ai_generator.json
@@ -183,7 +183,7 @@ This document outlines the detailed steps to **build the OmniPost.ai Minimum Via
 - [ ] ### 3.1 Create `index.html` File
     - [ ] Open a plain text editor (e.g., VS Code, Sublime Text, Notepad, TextEdit).
     - [ ] Create a new empty file.
-    - [ ] **Save this file as `index.html` inside the `omnipost-ai-mvp/frontend/` directory.**
+    - [ ] **Save this file as `index.html` inside the `omnipost-mvp/frontend/` directory.**
 
 - [ ] ### 3.2 Paste HTML/CSS/JavaScript Code into `index.html`
     - [ ] Copy the entire code block below.
@@ -427,7 +427,7 @@ This document outlines the detailed steps to **build the OmniPost.ai Minimum Via
     - [ ] Save the `index.html` file after updating the URL.
 
 - [ ] ### 3.4 Commit and Push Frontend Changes to GitHub
-    - [ ] Open your `bash` terminal and navigate to your `omnipost-ai-mvp` project root.
+    - [ ] Open your `bash` terminal and navigate to your `omnipost-mvp` project root.
     - [ ] Add the frontend files to Git:
         ```bash
         git add frontend/index.html
