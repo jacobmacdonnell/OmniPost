@@ -1,121 +1,40 @@
-# OmniPost.ai: AI-Powered Content Repurposing SaaS - MVP Plan
+# OmniPost.ai: MVP Development Plan
+
+This document outlines the detailed steps to **build the OmniPost.ai Minimum Viable Product (MVP)**.
 
 **Goal:** Repurpose long-form text content into tailored social media posts for Twitter, LinkedIn, and Instagram using n8n, OpenAI, and a simple HTML/JS frontend.
 
----
-
-## Phase 1: Local Development Environment Setup (Code & n8n Runtime)
-
-- [ ] ### 1.1 Get the Project Code from Git
-    - [ ] **If this is your PRIMARY development machine (starting fresh):**
-        - [ ] Choose a main project folder (e.g., `omnipost-ai-mvp`).
-        - [ ] Open your terminal, navigate to your preferred parent directory, and create the project folder:
-            ```bash
-            mkdir omnipost-ai-mvp
-            cd omnipost-ai-mvp
-            ```
-        - [ ] Initialize a Git repository:
-            ```bash
-            git init
-            ```
-        - [ ] Create necessary sub-folders:
-            ```bash
-            mkdir n8n-workflows
-            mkdir frontend
-            ```
-        - [ ] Create a remote repository on GitHub (if you don't have one):
-            - [ ] Go to [https://github.com/](https://www.github.com/) and sign in.
-            - [ ] Create a new repository (e.g., `omnipost-ai-mvp`).
-        - [ ] Link your local repository to the remote one and push initial structure:
-            ```bash
-            git remote add origin YOUR_GITHUB_REPO_URL
-            git branch -M main
-            git add .
-            git commit -m "Initial project setup with n8n-workflows and frontend directories"
-            git push -u origin main
-            ```
-            (Replace `YOUR_GITHUB_REPO_URL` with your GitHub repo URL.)
-    - [ ] **If this is a SECONDARY development machine (syncing):**
-        - [ ] Open your terminal.
-        - [ ] Navigate to your preferred parent directory (e.g., `cd ~/Documents`).
-        - [ ] Clone your GitHub repository:
-            ```bash
-            git clone YOUR_GITHUB_REPO_URL omnipost-ai-mvp
-            cd omnipost-ai-mvp
-            ```
-            (Replace `YOUR_GITHUB_REPO_URL` with the URL of your GitHub repository.)
-        - [ ] Now your machine has the basic project structure ready.
-    - [ ] **Always run this when starting work on ANY machine to get the latest changes:**
-        - [ ] In your `omnipost-ai-mvp` project root, execute:
-            ```bash
-            git pull origin main
-            ```
-
-- [ ] ### 1.2 Run n8n using Docker
-    - [ ] Ensure you are in the *root* of your `omnipost-ai-mvp` project directory in your terminal.
-    - [ ] Create a Docker volume for n8n data persistence. This ensures your n8n workflows and credentials are saved even if the container is removed. **(Do this only once per machine unless you want to reset n8n's data):**
-        ```bash
-        docker volume create n8n_data
-        ```
-        -   Confirm the volume is created (e.g., `n8n_data` should be returned).
-    - [ ] Run the n8n Docker container:
-        -   **For macOS (using `\` for line continuation):**
-            ```bash
-            docker run -it --rm \
-            --name n8n \
-            -p 5678:5678 \
-            -v n8n_data:/home/node/.n8n \
-            docker.n8n.io/n8nio/n8n
-            ```
-        -   **For Windows (PowerShell - using `` ` `` for line continuation, or type all on one line):**
-            ```powershell
-            docker run -it --rm `
-            --name n8n `
-            -p 5678:5678 `
-            -v n8n_data:/home/node/.n8n `
-            docker.n8n.io/n8nio/n8n
-            ```
-        -   **For Windows (Command Prompt - type all on one line to avoid issues with `^`):**
-            ```cmd
-            docker run -it --rm --name n8n -p 5678:5678 -v n8n_data:/home/node/.n8n docker.n8n.io/n8nio/n8n
-            ```
-    - [ ] **Important:** This terminal window must remain open and active for n8n to continue running. If you close it, n8n will stop.
-    - [ ] Wait for n8n to start (look for messages like `n8n ready on port 5678`).
-
-- [ ] ### 1.3 Access n8n in your browser
-    - [ ] Open your web browser.
-    - [ ] Navigate to `http://localhost:5678`
-    - [ ] Complete the initial n8n setup if prompted (this involves creating your first owner user account).
+**Prerequisite:** Ensure your local development environment is set up and n8n is running by following the steps in `local env setup.md`.
 
 ---
 
-## Phase 2: Configure OpenAI API Key
+## Phase 1: Configure OpenAI API Key
 
-- [ ] ### 2.1 Obtain an OpenAI API Key
+- [ ] ### 1.1 Obtain an OpenAI API Key
     - [ ] Go to the OpenAI API website: [https://platform.openai.com/](https://platform.openai.com/)
     - [ ] Sign up or log in to your OpenAI account.
     - [ ] Navigate to "API keys" (usually found under your profile icon in the top right, then select "API keys").
     - [ ] Click "Create new secret key."
     - [ ] **Immediately copy the generated API key** to a secure location (e.g., a temporary text file, password manager). This key will only be shown once upon creation.
 
-- [ ] ### 2.2 Add OpenAI Credentials to n8n
+- [ ] ### 1.2 Add OpenAI Credentials to n8n
     - [ ] In the n8n UI (`http://localhost:5678`), click on **"Credentials"** in the left sidebar.
     - [ ] Click "New Credential" in the top right.
     - [ ] Search for "OpenAI API" and select it from the list.
     - [ ] Paste your copied OpenAI API key into the "API Key" field.
-    - [ ] Enter a descriptive name for your credential (e.g., "My OpenAI Key").
+    - [ ] Enter a descriptive name for your credential (e.g., "OmniPost OpenAI Key").
     - [ ] Click "Save".
-    - [ ] **Note:** Credentials are saved within your n8n Docker volume (`n8n_data`). You will need to add them to your n8n instance manually on *each* machine you are using, as they are not part of the workflow JSON and are not synced via Git.
+    - [ ] **Note:** Credentials are saved within your n8n Docker volume (`n8n_data`) on the specific machine you are using. You will need to add them to your n8n instance manually on *each* machine you develop on, as they are not part of the workflow JSON and are not synced via Git.
 
 ---
 
-## Phase 3: Create and Version Control the n8n Automation Workflow
+## Phase 2: Create and Version Control the n8n Automation Workflow
 
-- [ ] ### 3.1 Create a New Workflow
+- [ ] ### 2.1 Create a New Workflow
     - [ ] In the n8n UI, click on **"Workflows"** in the left sidebar.
     - [ ] Click "New Workflow" in the top right.
 
-- [ ] ### 3.2 Add a Webhook Trigger Node
+- [ ] ### 2.2 Add a Webhook Trigger Node
     - [ ] Click the "+" button (or press `Spacebar`) on the workflow canvas to add a new node.
     - [ ] Search for "Webhook" and select the **"Webhook"** trigger node.
     - [ ] Configure Webhook Node Parameters (right panel):
@@ -124,7 +43,7 @@
         -   **Response Mode:** Select `Last Node`.
     - [ ] Click the "Execute Workflow" button (the small play icon) on the Webhook node itself. This puts the webhook in "listening" mode for a test.
 
-- [ ] ### 3.3 Add a Set Node (Prepare Input)
+- [ ] ### 2.3 Add a Set Node (Prepare Input)
     - [ ] Connect a new node from the output handle of the Webhook node (drag a line from its right circle).
     - [ ] Search for "Set" and select the **"Set"** node (found under the "Core" section).
     - [ ] Configure Set Node Parameters:
@@ -138,41 +57,28 @@
             ```
         -   This step extracts the `content` from the incoming webhook body and assigns it to a variable called `longFormContent`.
 
-- [ ] ### 3.4 Test the Webhook (Optional, but Recommended for verification): ✅
-    - [ ] Open a NEW terminal window (do not close the one running n8n).
+- [ ] ### 2.4 Test the Webhook (Optional, but Recommended for verification): ✅
+    - [ ] Open a NEW `bash` terminal window (do not close the one running n8n).
     - [ ] Ensure you are in your project root (`omnipost-ai-mvp`).
     - [ ] Run the following `curl` command to send a test request to your webhook:
-        -   **Replace `YOUR_TEST_WEBHOOK_URL_HERE`** with the exact Test Webhook URL you copied from the Webhook node in step 3.2.
-        -   **For macOS:**
-            ```bash
-            curl -X POST YOUR_TEST_WEBHOOK_URL_HERE \
-            -H "Content-Type: application/json" \
-            -d '{
-              "content": "This is a test long-form content that needs to be summarized and turned into social media posts for Twitter, LinkedIn, and Instagram. It contains various details about modern AI applications and their impact on daily life."
-            }'
-            ```
-        -   **For Windows (PowerShell):**
-            ```powershell
-            curl -X POST YOUR_TEST_WEBHOOK_URL_HERE `
-            -H "Content-Type: application/json" `
-            -d '{
-              "content": "This is a test long-form content that needs to be summarized and turned into social media posts for Twitter, LinkedIn, and Instagram. It contains various details about modern AI applications and their impact on daily life."
-            }'
-            ```
-        -   **For Windows (Command Prompt - type all on one line):**
-            ```cmd
-            curl -X POST YOUR_TEST_WEBHOOK_URL_HERE -H "Content-Type: application/json" -d "{ \"content\": \"This is a test long-form content that needs to be summarized and turned into social media posts for Twitter, LinkedIn, and Instagram. It contains various details about modern AI applications and their impact on daily life.\" }"
-            ```
+        -   **Replace `YOUR_TEST_WEBHOOK_URL_HERE`** with the exact Test Webhook URL you copied from the Webhook node in step 2.2.
+        ```bash
+        curl -X POST YOUR_TEST_WEBHOOK_URL_HERE \
+        -H "Content-Type: application/json" \
+        -d '{
+          "content": "This is a test long-form content that needs to be summarized and turned into social media posts for Twitter, LinkedIn, and Instagram. It contains various details about modern AI applications and their impact on daily life."
+        }'
+        ```
     - [ ] Verify in n8n UI:
         -   [ ] Confirm the Webhook node shows successful execution (a green checkmark and output data).
         -   [ ] Confirm the Set node also shows successful execution.
         -   [ ] Inspect Output: Click the Set node and check its "Output" tab in the right panel to ensure `longFormContent` is populated with the test content you sent.
 
-- [ ] ### 3.5 Add OpenAI Chat Model Node (for Twitter)
+- [ ] ### 2.5 Add OpenAI Chat Model Node (for Twitter)
     - [ ] Connect a new node from the output of the **Set node**.
     - [ ] Search for "OpenAI" and select the **"OpenAI Chat Model"** node.
     - [ ] Configure OpenAI Chat Model Node Parameters:
-        -   **Authentication:** Select your previously created OpenAI credential (e.g., "My OpenAI Key").
+        -   **Authentication:** Select your previously created OpenAI credential (e.g., "OmniPost OpenAI Key").
         -   **Model:** Select `gpt-4o` (or `gpt-3.5-turbo` for potentially faster/cheaper testing during development).
         -   **Locate the "Messages" section:** This is a direct parameter field, usually a large box, below "Model" and any "Options". It often has an "Add Item" button within it.
         -   [ ] Click the "Add Item" button *within the "Messages" section*.
@@ -190,7 +96,7 @@
             -   **Output Property:** Type `twitterPost`. This will store the AI's response under this key.
     - [ ] Click the "Execute Node" button on this OpenAI node to test its output. Verify that a Twitter-style post is generated.
 
-- [ ] ### 3.6 Add OpenAI Chat Model Node (for LinkedIn)
+- [ ] ### 2.6 Add OpenAI Chat Model Node (for LinkedIn)
     - [ ] Connect a new node from the output of the **original Set node** (this creates a second branch from the Set node, running in parallel with the Twitter branch).
     - [ ] Search for "OpenAI" and select the **"OpenAI Chat Model"** node.
     - [ ] Configure OpenAI Chat Model Node Parameters:
@@ -212,7 +118,7 @@
             -   **Output Property:** Type `linkedinPost`.
     - [ ] Click the "Execute Node" button on this OpenAI node to test its output. Verify a LinkedIn-style post.
 
-- [ ] ### 3.7 Add OpenAI Chat Model Node (for Instagram)
+- [ ] ### 2.7 Add OpenAI Chat Model Node (for Instagram)
     - [ ] Connect a new node from the output of the **original Set node** (creating a third parallel branch).
     - [ ] Search for "OpenAI" and select the **"OpenAI Chat Model"** node.
     - [ ] Configure OpenAI Chat Model Node Parameters:
@@ -234,7 +140,7 @@
             -   **Output Property:** Type `instagramPost`.
     - [ ] Click the "Execute Node" button on this OpenAI node to test its output. Verify an Instagram-style caption.
 
-- [ ] ### 3.8 Add a Merge Node
+- [ ] ### 2.8 Add a Merge Node
     - [ ] Add a new node to your workflow.
     - [ ] Search for "Merge" and select the **"Merge"** node (under Core).
     - [ ] Connect all three OpenAI Chat Model nodes to the Merge node. Drag connections from the right side of *each* OpenAI Chat Model node to the left side of the Merge node.
@@ -246,39 +152,40 @@
     - [ ] Click the "Execute Node" button on the Merge node to test.
         -   [ ] Confirm that all three generated posts (`twitterPost`, `linkedinPost`, `instagramPost`) are now merged into a single JSON object under the `output` key (or your custom `Property Name`) in the Merge node's output. This is the final JSON structure your frontend will receive.
 
-- [ ] ### 3.9 Activate the Workflow
+- [ ] ### 2.9 Activate the Workflow
     - [ ] In the top right corner of the n8n workflow editor, toggle the **"Active"** switch to `On`.
     - [ ] **Important:** This makes your production webhook live and accessible for your frontend. The "Test Webhook URL" is only for testing within the n8n editor; your frontend will use the "Production Webhook URL."
 
-- [ ] ### 3.10 Save Workflow and Commit to GitHub
+- [ ] ### 2.10 Save Workflow and Commit to GitHub
     - [ ] In the n8n UI, click the three dots (`...`) next to the workflow name (or in the top right corner if it's the current workflow).
     - [ ] Select **"Download"**.
     - [ ] **Save this `.json` file directly into your `omnipost-ai-mvp/n8n-workflows/` folder.**
         -   Name the file clearly (e.g., `omnipost_ai_generator.json`).
-    - [ ] Open your terminal and navigate to your `omnipost-ai-mvp` project root.
+    - [ ] Open your `bash` terminal and navigate to your `omnipost-ai-mvp` project root.
     - [ ] Add the workflow file to Git:
         ```bash
         git add n8n-workflows/omnipost_ai_generator.json
         ```
     - [ ] Commit your changes:
         ```bash
-        git commit -m "Add initial OmniPost AI Generator n8n workflow"
+        git commit -m "Add OmniPost AI Generator n8n workflow"
         ```
     - [ ] Push to GitHub:
         ```bash
         git push origin main
         ```
+    - [ ] **Important for syncing:** If developing on multiple machines, after pulling the latest code via `git pull origin main`, you'll need to re-import the workflow JSON (`omnipost_ai_generator.json`) into your local n8n instance on the other machine to reflect any changes.
 
 ---
 
-## Phase 4: Build and Version Control the Simple Frontend (HTML/JavaScript)
+## Phase 3: Build and Version Control the Simple Frontend (HTML/JavaScript)
 
-- [ ] ### 4.1 Create `index.html` File
+- [ ] ### 3.1 Create `index.html` File
     - [ ] Open a plain text editor (e.g., VS Code, Sublime Text, Notepad, TextEdit).
     - [ ] Create a new empty file.
     - [ ] **Save this file as `index.html` inside the `omnipost-ai-mvp/frontend/` directory.**
 
-- [ ] ### 4.2 Paste HTML/CSS/JavaScript Code into `index.html`
+- [ ] ### 3.2 Paste HTML/CSS/JavaScript Code into `index.html`
     - [ ] Copy the entire code block below.
     - [ ] Paste the copied code into your `index.html` file.
     ```html
@@ -507,7 +414,7 @@
     </html>
     ```
 
-- [ ] ### 4.3 Update the Webhook URL in `index.html`
+- [ ] ### 3.3 Update the Webhook URL in `index.html`
     - [ ] Go back to your n8n workflow in your browser.
     - [ ] Click on your Webhook trigger node (the very first node in your workflow).
     - [ ] In the "Parameters" panel on the right, under the "Webhook URLs" section, locate the **"Production" Webhook URL**.
@@ -519,15 +426,15 @@
     - [ ] **Ensure** you use the **Production URL**. The Test URL is only for manual testing *within* the n8n editor.
     - [ ] Save the `index.html` file after updating the URL.
 
-- [ ] ### 4.4 Commit and Push Frontend Changes to GitHub
-    - [ ] Open your terminal and navigate to your `omnipost-ai-mvp` project root.
+- [ ] ### 3.4 Commit and Push Frontend Changes to GitHub
+    - [ ] Open your `bash` terminal and navigate to your `omnipost-ai-mvp` project root.
     - [ ] Add the frontend files to Git:
         ```bash
         git add frontend/index.html
         ```
     - [ ] Commit your changes:
         ```bash
-        git commit -m "Add initial OmniPost frontend HTML/JS"
+        git commit -m "Add OmniPost frontend HTML/JS"
         ```
     - [ ] Push to GitHub:
         ```bash
@@ -536,12 +443,12 @@
 
 ---
 
-## Phase 5: Test Your OmniPost.ai MVP!
+## Phase 4: Test Your OmniPost.ai MVP!
 
-- [ ] ### 5.1 Test Your OmniPost.ai MVP!
-    - [ ] **Ensure n8n is Running:** Verify that your n8n Docker container is still active. The terminal window where you ran the `docker run` command for n8n should still be open and showing n8n logs.
+- [ ] ### 4.1 Test Your OmniPost.ai MVP!
+    - [ ] **Ensure n8n is Running:** Verify that your n8n Docker container is still active (check the terminal where you ran the `docker run` command for n8n).
     - [ ] **Ensure n8n Workflow is Active:** In the n8n UI, confirm that your `OmniPost AI Generator` workflow is **Active** (the toggle switch in the top right of the workflow editor should be green).
-    - [ ] **Open Frontend:** Open your `index.html` file in your web browser (either directly or via `http://localhost:8000` if using a local server).
+    - [ ] **Open Frontend:** Open your `index.html` file in your web browser (either directly by navigating to the file path or via `http://localhost:8000` if you're using a simple local web server).
     - [ ] **Paste Content:** Paste some long-form text (e.g., a blog post, article) into the large textarea on the OmniPost.ai web page.
     - [ ] **Generate Posts:** Click the **"Generate Social Media Posts"** button.
         -   **Observe:** The button text should change to "Generating... Please wait."
