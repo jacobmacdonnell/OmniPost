@@ -61,7 +61,7 @@ const pricingPlans = [
     popular: true,
   },
   {
-    name: "Business",
+    name: "Max",
     description: "For teams and agencies",
     monthlyPrice: "99",
     yearlyPrice: "79",
@@ -75,7 +75,7 @@ const pricingPlans = [
       "API access",
       "Dedicated support",
     ],
-    cta: "Contact Sales",
+    cta: "Start Free Trial",
     popular: false,
   },
 ]
