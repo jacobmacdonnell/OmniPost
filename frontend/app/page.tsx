@@ -282,7 +282,7 @@ export default function LandingPage() {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-8">
-                <Link href="/tool">
+                <Link href="/dashboard">
                   <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2.5">
                     Try For Free
                     <ArrowRight className="ml-2 h-4 w-4" />
@@ -300,13 +300,9 @@ export default function LandingPage() {
                   {[1, 2, 3, 4].map((i) => (
                     <div
                       key={i}
-                      className="w-8 h-8 rounded-full border-2 border-slate-950 bg-gradient-to-br from-blue-400 to-purple-500 overflow-hidden"
+                      className="w-8 h-8 rounded-full border-2 border-slate-900 bg-slate-700 flex items-center justify-center text-slate-400 shadow-md"
                     >
-                      <img
-                        src={`/placeholder.svg?height=32&width=32&text=${i}`}
-                        alt="User avatar"
-                        className="w-full h-full object-cover"
-                      />
+                      <Users className="h-4 w-4" />
                     </div>
                   ))}
                 </div>
@@ -408,7 +404,7 @@ export default function LandingPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => (
-              <Card key={index} className="bg-slate-800 border-slate-700 hover:border-slate-600 transition-colors">
+              <Card key={index} className="bg-slate-800/70 border-slate-700/60 backdrop-blur-sm hover:border-slate-600 transition-colors shadow-lg">
                 <CardContent className="p-6">
                   <div className="inline-flex p-2 rounded-lg bg-blue-500/10 text-blue-400 mb-4">{feature.icon}</div>
                   <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
@@ -474,7 +470,7 @@ export default function LandingPage() {
           </div>
 
           <div className="text-center mt-8">
-            <Link href="/tool">
+            <Link href="/dashboard">
               <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2.5">
                 Try It Now
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -503,39 +499,38 @@ export default function LandingPage() {
             </p>
           </div>
 
-          {/* Professional Compact Billing Toggle */}
-          <div className="flex justify-center mb-8">
-            <div className="relative inline-flex items-center bg-slate-800/50 backdrop-blur-sm rounded-lg p-1 border border-slate-700/50">
-              {/* Sliding Background */}
-              <div
-                className={`absolute top-1 bottom-1 rounded-md bg-gradient-to-r from-blue-600 to-blue-700 transition-all duration-300 ease-out shadow-sm ${
-                  billingPeriod === "monthly" ? "left-1 w-[72px]" : "left-[77px] w-[56px]"
-                }`}
-              />
-
-              {/* Monthly Button */}
-              <button
+          {/* Professional Compact Billing Toggle - REVISED */}
+          <div className="flex justify-center items-center mb-8 space-x-3">
+            <div className="inline-flex items-center rounded-lg p-1 bg-slate-800/50 border border-slate-700/50 backdrop-blur-sm">
+              <Button
                 onClick={() => setBillingPeriod("monthly")}
-                className={`relative z-10 px-4 py-2 text-sm font-medium rounded-md transition-colors duration-300 ${
-                  billingPeriod === "monthly" ? "text-white" : "text-slate-400 hover:text-slate-200"
-                }`}
+                variant="ghost" // Base variant, active state will override background
+                className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ease-out focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 relative z-10
+                  ${
+                    billingPeriod === "monthly"
+                      ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md"
+                      : "text-slate-400 hover:text-slate-200 hover:bg-slate-700/60"
+                  }`}
               >
                 Monthly
-              </button>
-
-              {/* Yearly Button */}
-              <button
+              </Button>
+              <Button
                 onClick={() => setBillingPeriod("yearly")}
-                className={`relative z-10 px-4 py-2 text-sm font-medium rounded-md transition-colors duration-300 ${
-                  billingPeriod === "yearly" ? "text-white" : "text-slate-400 hover:text-slate-200"
-                }`}
+                variant="ghost" // Base variant, active state will override background
+                className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ease-out focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 relative z-10
+                  ${
+                    billingPeriod === "yearly"
+                      ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md"
+                      : "text-slate-400 hover:text-slate-200 hover:bg-slate-700/60"
+                  }`}
               >
                 Yearly
-              </button>
-
-              {/* 20% off badge - positioned separately */}
-              <span className="ml-2 bg-green-500 text-white text-xs font-medium px-1.5 py-0.5 rounded">20% off</span>
+              </Button>
             </div>
+            {/* Adjusted Badge styling for consistency */}
+            <Badge className="self-center bg-green-500/20 text-green-300 border border-green-500/30 px-2.5 py-1 text-xs font-semibold">
+              Save up to 20%
+            </Badge>
           </div>
 
           {/* Pricing Cards with Equal Heights */}
@@ -650,7 +645,7 @@ export default function LandingPage() {
 
           <div className="grid md:grid-cols-3 gap-6">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="bg-slate-900 border-slate-800 hover:border-slate-700 transition-colors">
+              <Card key={index} className="bg-slate-900/70 border-slate-800/60 backdrop-blur-sm hover:border-slate-700 transition-colors shadow-lg">
                 <CardContent className="p-6">
                   {/* Rating */}
                   <div className="flex items-center space-x-1 mb-4">
@@ -713,7 +708,7 @@ export default function LandingPage() {
 
           <div className="space-y-4">
             {faqs.map((faq, index) => (
-              <Card key={index} className="bg-slate-800 border-slate-700 hover:border-slate-600 transition-colors">
+              <Card key={index} className="bg-slate-800/70 border-slate-700/60 backdrop-blur-sm hover:border-slate-600 transition-colors shadow-lg">
                 <CardContent className="p-6">
                   <h3 className="font-semibold text-white mb-2">{faq.question}</h3>
                   <p className="text-slate-400 text-sm leading-relaxed">{faq.answer}</p>
@@ -737,7 +732,7 @@ export default function LandingPage() {
             Join thousands of content creators who are saving time and increasing engagement with OmniPost.ai.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/tool">
+            <Link href="/dashboard">
               <Button className="bg-white text-blue-600 hover:bg-gray-100 px-6 py-2.5">
                 Try For Free
                 <ArrowRight className="ml-2 h-4 w-4" />
