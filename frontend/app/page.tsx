@@ -184,7 +184,7 @@ export default function LandingPage() {
             {/* Logo */}
             <div className="flex items-center space-x-2">
               <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                <Sparkles className="h-4 w-4 text-white" />
+                  <Sparkles className="h-4 w-4 text-white" />
               </div>
               <div>
                 <h1 className="text-lg font-bold text-white">OmniPost.ai</h1>
@@ -257,7 +257,7 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* Hero Section */}
+        {/* Hero Section */}
       <section className="relative bg-slate-950 py-16 lg:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -272,7 +272,7 @@ export default function LandingPage() {
                 Transform Content Into{" "}
                 <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                   Social Posts
-                </span>
+            </span>
               </h1>
 
               <p className="text-lg text-slate-400 leading-relaxed mb-6 max-w-xl mx-auto lg:mx-0">
@@ -311,7 +311,7 @@ export default function LandingPage() {
                   <div className="text-slate-400">trust OmniPost.ai</div>
                 </div>
               </div>
-            </div>
+        </div>
 
             {/* Hero Visual */}
             <div className="relative">
@@ -338,7 +338,7 @@ export default function LandingPage() {
                     <p className="text-xs text-slate-300 leading-relaxed">
                       🚀 Just discovered something game-changing about AI-powered content creation! #AI #ContentCreation
                     </p>
-                  </div>
+            </div>
 
                   <div className="bg-slate-800 rounded-lg p-3 border border-slate-700">
                     <div className="flex items-center space-x-2 mb-2">
@@ -497,7 +497,7 @@ export default function LandingPage() {
             <p className="text-slate-400 max-w-2xl mx-auto">
               Choose the plan that fits your needs. All plans include our core features with different usage limits.
             </p>
-          </div>
+              </div>
 
           {/* Pricing Toggle - Revised Single Button Group */}
           <div className="flex justify-center mb-8">
@@ -535,14 +535,14 @@ export default function LandingPage() {
                 )}
               </button>
             </div>
-          </div>
+            </div>
 
           {/* Pricing Cards with Equal Heights */}
           <div className="grid md:grid-cols-3 gap-6">
             {pricingPlans.map((plan, index) => {
               const price = billingPeriod === "monthly" ? plan.monthlyPrice : plan.yearlyPrice
 
-              return (
+                return (
                 <div key={index} className="flex">
                   <Card
                     className={`w-full flex flex-col bg-slate-800/90 backdrop-blur-sm ${
@@ -609,9 +609,9 @@ export default function LandingPage() {
                     </CardContent>
                   </Card>
                 </div>
-              )
-            })}
-          </div>
+                )
+              })}
+            </div>
 
           {/* Enterprise CTA */}
           <Card className="mt-10 bg-slate-800/90 border-slate-700/70 backdrop-blur-sm shadow-lg">
@@ -688,7 +688,7 @@ export default function LandingPage() {
               </Card>
             ))}
           </div>
-        </div>
+            </div>
       </section>
 
       {/* FAQ Section */}
