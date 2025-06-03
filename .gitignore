@@ -18,13 +18,40 @@ htmlcov/
 *.egg
 MANIFEST
 
-# Node.js
+# Node.js & Frontend Dependencies
 node_modules/
-npm-debug.log
-yarn-error.log
-yarn-debug.log
-package-lock.json # Add this if you don't want to commit it, though often it is committed
-# frontend/dist/ # Example if you have a frontend build output
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Next.js Build Artifacts
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/dist/
+frontend/.vercel/
+frontend/.env*
+frontend/next-env.d.ts
+
+# Package Manager Lock Files (choose one approach)
+# Uncomment if you want to ignore lock files:
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Runtime & Logs
+*.log
+logs/
+*.pid
+*.seed
+*.pid.lock
+
+# Environment Variables & Secrets
+.env*
+!.env.example
+!.env.template
 
 # IDEs and Editors
 .idea/
@@ -33,9 +60,15 @@ package-lock.json # Add this if you don't want to commit it, though often it is 
 *~
 *.sublime-project
 *.sublime-workspace
+.history/
 
 # OS-specific
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 
 # n8n - specific (if any, for local data not in workflows)
@@ -43,20 +76,44 @@ Thumbs.db
 # For example, if n8n created local log files outside Docker volumes:
 # *.log
 
-# Secrets - ensure no secrets are ever committed
-# Double-check any local config files that might contain secrets
-# .env # A common pattern for environment variables
+# Docker
+.dockerignore
+# Uncomment if docker-compose has secrets:
+# docker-compose.override.yml
+
+# OmniPost specific (examples)
+# frontend/build/ # if you have a build directory for frontend
+# reports/ # if you generate local reports
 
 # Docker
 .dockerignore
 docker-compose.yml # If it contains secrets or local overrides; often committed otherwise.
 # For this project, dev_setup.md implies docker-compose.yml is not used for core n8n itself.
 
-# OmniPost specific (examples)
-# frontend/build/ # if you have a build directory for frontend
-# reports/ # if you generate local reports
+# n8n Local Data (if any generated outside Docker)
+n8n-data/
+.n8n/
+*.n8n
 
-# Next.js build outputs for frontend
-/frontend/.next/
-/frontend/out/
-/frontend/next-env.d.ts 
+# Temporary Files
+*.tmp
+*.temp
+.cache/
+.temporary/
+
+# Build Outputs
+build/
+dist/
+out/
+
+# Testing
+coverage/
+.nyc_output/
+.jest/
+
+# Miscellaneous
+*.tgz
+*.tar.gz
+.npm/
+.eslintcache
+.parcel-cache/ 
