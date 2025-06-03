@@ -288,7 +288,7 @@ export default function LandingPage() {
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
-                <Button variant="outline" className="border-slate-700 text-slate-300 hover:bg-slate-800 px-6 py-2.5">
+                <Button variant="outline" className="border-slate-600 text-slate-200 hover:bg-slate-800 hover:text-white hover:border-slate-700 px-6 py-2.5">
                   <Play className="mr-2 h-4 w-4" />
                   Watch Demo
                 </Button>
@@ -499,38 +499,42 @@ export default function LandingPage() {
             </p>
           </div>
 
-          {/* Professional Compact Billing Toggle - REVISED */}
-          <div className="flex justify-center items-center mb-8 space-x-3">
-            <div className="inline-flex items-center rounded-lg p-1 bg-slate-800/50 border border-slate-700/50 backdrop-blur-sm">
-              <Button
+          {/* Pricing Toggle - Revised Single Button Group */}
+          <div className="flex justify-center mb-8">
+            <div className="inline-flex items-center rounded-lg p-0.5 bg-slate-800/60 border border-slate-700/50 backdrop-blur-sm shadow-sm">
+              <button
                 onClick={() => setBillingPeriod("monthly")}
-                variant="ghost" // Base variant, active state will override background
-                className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ease-out focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 relative z-10
+                className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ease-out focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 relative
                   ${
                     billingPeriod === "monthly"
                       ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md"
-                      : "text-slate-400 hover:text-slate-200 hover:bg-slate-700/60"
+                      : "text-slate-300 hover:text-slate-100 hover:bg-slate-700/50"
                   }`}
               >
                 Monthly
-              </Button>
-              <Button
+              </button>
+              <button
                 onClick={() => setBillingPeriod("yearly")}
-                variant="ghost" // Base variant, active state will override background
-                className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ease-out focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 relative z-10
+                className={`flex items-center px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ease-out focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 relative
                   ${
                     billingPeriod === "yearly"
                       ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md"
-                      : "text-slate-400 hover:text-slate-200 hover:bg-slate-700/60"
+                      : "text-slate-300 hover:text-slate-100 hover:bg-slate-700/50"
                   }`}
               >
                 Yearly
-              </Button>
+                {billingPeriod === 'monthly' && (
+                  <Badge className="ml-2 bg-green-500/30 text-green-200 border border-green-500/40 px-1.5 py-0.5 text-xs font-semibold">
+                    Save 20%
+                  </Badge>
+                )}
+                 {billingPeriod === 'yearly' && (
+                  <Badge className="ml-2 bg-green-400 text-slate-900 border border-green-500 px-1.5 py-0.5 text-xs font-semibold">
+                    Save 20%
+                  </Badge>
+                )}
+              </button>
             </div>
-            {/* Adjusted Badge styling for consistency */}
-            <Badge className="self-center bg-green-500/20 text-green-300 border border-green-500/30 px-2.5 py-1 text-xs font-semibold">
-              Save up to 20%
-            </Badge>
           </div>
 
           {/* Pricing Cards with Equal Heights */}
