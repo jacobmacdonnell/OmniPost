@@ -209,7 +209,7 @@ export default function LandingPage() {
 
             {/* Desktop CTA */}
             <div className="hidden md:flex items-center space-x-3">
-              <Button variant="ghost" className="text-sm text-slate-300 hover:text-white">
+              <Button className="border-slate-700 bg-slate-800 text-white hover:bg-white hover:text-slate-600 hover:border-slate-600 px-4 py-2">
                 Log In
               </Button>
               <Button className="text-sm bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-4 py-2">
@@ -325,6 +325,7 @@ export default function LandingPage() {
                   <div className="flex-1 text-center">
                     <div className="text-xs text-slate-400 font-medium">OmniPost.ai</div>
                   </div>
+                  <div className="w-[60px]"></div>
                 </div>
 
                 {/* Content Preview */}
@@ -726,14 +727,13 @@ export default function LandingPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/dashboard">
-              <Button className="bg-white text-blue-600 hover:bg-gray-100 px-6 py-2.5">
+              <Button className="bg-white text-slate-900 hover:bg-gray-100 px-6 py-2.5">
                 Try For Free
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
             <Button
-              variant="outline"
-              className="border-white text-white hover:bg-white hover:text-blue-600 px-6 py-2.5"
+              className="border-slate-700 bg-slate-800 text-white hover:bg-white hover:text-slate-600 hover:border-slate-600 px-6 py-2.5"
             >
               Schedule Demo
             </Button>
