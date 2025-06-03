@@ -1,1 +1,1 @@
-# OmniPost-MVP
+# OmniPost AI
