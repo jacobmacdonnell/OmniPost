@@ -288,7 +288,7 @@ export default function LandingPage() {
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
-                <Button variant="outline" className="border-slate-600 text-slate-200 hover:bg-slate-800 hover:text-white hover:border-slate-700 px-6 py-2.5">
+                <Button variant="outline" className="border-slate-700 bg-slate-800 text-white hover:bg-white hover:text-slate-600 hover:border-slate-600 px-6 py-2.5">
                   <Play className="mr-2 h-4 w-4" />
                   Watch Demo
                 </Button>
@@ -297,7 +297,7 @@ export default function LandingPage() {
               {/* Social Proof */}
               <div className="flex items-center justify-center lg:justify-start space-x-4">
                 <div className="flex -space-x-2">
-                  {[1, 2, 3, 4].map((i) => (
+                  {[1, 2, 3].map((i) => (
                     <div
                       key={i}
                       className="w-8 h-8 rounded-full border-2 border-slate-900 bg-slate-700 flex items-center justify-center text-slate-400 shadow-md"
@@ -307,8 +307,7 @@ export default function LandingPage() {
                   ))}
                 </div>
                 <div className="text-sm">
-                  <div className="font-medium text-white">10,000+ creators</div>
-                  <div className="text-slate-400">trust OmniPost.ai</div>
+                  <div className="font-medium text-white">10,000+ creators & businesses trust OmniPost.ai</div>
                 </div>
               </div>
         </div>
@@ -501,13 +500,13 @@ export default function LandingPage() {
 
           {/* Pricing Toggle - Revised Single Button Group */}
           <div className="flex justify-center mb-8">
-            <div className="inline-flex items-center rounded-lg p-0.5 bg-slate-800/60 border border-slate-700/50 backdrop-blur-sm shadow-sm">
+            <div className="inline-flex items-center rounded-lg p-0.5 bg-slate-800 border border-slate-700 backdrop-blur-sm shadow-sm">
               <button
                 onClick={() => setBillingPeriod("monthly")}
                 className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ease-out focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 relative
                   ${
                     billingPeriod === "monthly"
-                      ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md"
+                      ? "bg-blue-500 text-white shadow-md"
                       : "text-slate-300 hover:text-slate-100 hover:bg-slate-700/50"
                   }`}
               >
@@ -518,21 +517,11 @@ export default function LandingPage() {
                 className={`flex items-center px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ease-out focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 relative
                   ${
                     billingPeriod === "yearly"
-                      ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md"
+                      ? "bg-blue-500 text-white shadow-md"
                       : "text-slate-300 hover:text-slate-100 hover:bg-slate-700/50"
                   }`}
               >
-                Yearly
-                {billingPeriod === 'monthly' && (
-                  <Badge className="ml-2 bg-green-500/30 text-green-200 border border-green-500/40 px-1.5 py-0.5 text-xs font-semibold">
-                    Save 20%
-                  </Badge>
-                )}
-                 {billingPeriod === 'yearly' && (
-                  <Badge className="ml-2 bg-green-400 text-slate-900 border border-green-500 px-1.5 py-0.5 text-xs font-semibold">
-                    Save 20%
-                  </Badge>
-                )}
+                Yearly (save 20%)
               </button>
             </div>
             </div>
@@ -562,20 +551,20 @@ export default function LandingPage() {
                       )}
 
                       {/* Header Section */}
-                      <div className="text-center mb-6 pt-2">
-                        <h3 className="text-xl font-bold text-white mb-1">{plan.name}</h3>
-                        <p className="text-slate-400 text-sm mb-4">{plan.description}</p>
+                      <div className="text-center mb-4 pt-0">
+                        <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
+                        <p className="text-slate-400 text-sm mb-3">{plan.description}</p>
                         <div className="mb-4 h-[72px]">
                           <span className="text-3xl font-bold text-white">${price}</span>
                           <span className="text-slate-400 text-sm ml-1">
-                            {billingPeriod === "yearly"
-                              ? "/month billed yearly"
-                              : plan.period === "forever"
-                                ? plan.period
+                            {plan.period === "forever" 
+                              ? "forever"
+                              : billingPeriod === "yearly"
+                                ? "/month billed yearly"
                                 : "/month"}
                           </span>
                           {billingPeriod === "yearly" && plan.yearlySavings !== "0" && (
-                            <div className="text-green-400 text-sm font-medium mt-1">
+                            <div className="text-green-400 text-sm font-medium mt-2">
                               Save ${plan.yearlySavings}/year
                             </div>
                           )}
@@ -583,11 +572,11 @@ export default function LandingPage() {
                       </div>
 
                       {/* Features Section - Flex Grow */}
-                      <div className="flex-grow mb-6">
+                      <div className="flex-grow mb-8">
                         <ul className="space-y-3">
                           {plan.features.map((feature, i) => (
-                            <li key={i} className="flex items-start space-x-2">
-                              <Check className="h-4 w-4 text-green-400 shrink-0 mt-0.5" />
+                            <li key={i} className="flex items-center space-x-2">
+                              <Check className="h-4 w-4 text-green-400 shrink-0" />
                               <span className="text-slate-300 text-sm">{feature}</span>
                             </li>
                           ))}
@@ -595,7 +584,7 @@ export default function LandingPage() {
                       </div>
 
                       {/* CTA Button - Always at Bottom */}
-                      <div className="mt-auto pt-2">
+                      <div className="mt-auto">
                         <Button
                           className={`w-full py-5 ${
                             plan.popular
