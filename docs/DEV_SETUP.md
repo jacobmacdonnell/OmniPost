@@ -28,13 +28,30 @@ Docker commands are for a command-line terminal. GitHub UI for Git.
 **2.1 Sync & Run n8n**
 1. **Sync Code:** Use GitHub UI to ensure local code is up-to-date.
 2. **Run n8n (Choose A or B):**
+    *   **Note on CORS & Timezone:** The `N8N_CORS_ALLOWED_ORIGINS` is set to `"http://localhost:3000"`. If your frontend (e.g., Next.js) development server runs on a different port, adjust this value. The timezone is set to "America/Vancouver".
     * **A) Interactive (Logs in terminal, stops with `Ctrl+C`):**
         ```bash
-        docker run -it --rm --name n8n -p 5678:5678 -v n8n_data:/home/node/.n8n docker.n8n.io/n8nio/n8n
+        docker run -it --rm --name n8n -p 5678:5678 \
+          -e N8N_CORS_ALLOWED_ORIGINS="http://localhost:3000" \
+          -e N8N_CORS_ALLOWED_METHODS="GET,POST,PUT,DELETE,OPTIONS" \
+          -e N8N_CORS_ALLOWED_HEADERS="Content-Type,Authorization,X-Requested-With,Origin,Accept" \
+          -e N8N_CORS_ALLOW_CREDENTIALS="true" \
+          -e GENERIC_TIMEZONE="America/Vancouver" \
+          -e TZ="America/Vancouver" \
+          -v n8n_data:/home/node/.n8n \
+          docker.n8n.io/n8nio/n8n
         ```
     * **B) Detached (Background mode, terminal free):**
         ```bash
-        docker run -d --name n8n -p 5678:5678 -v n8n_data:/home/node/.n8n docker.n8n.io/n8nio/n8n
+        docker run -d --name n8n -p 5678:5678 \
+          -e N8N_CORS_ALLOWED_ORIGINS="http://localhost:3000" \
+          -e N8N_CORS_ALLOWED_METHODS="GET,POST,PUT,DELETE,OPTIONS" \
+          -e N8N_CORS_ALLOWED_HEADERS="Content-Type,Authorization,X-Requested-With,Origin,Accept" \
+          -e N8N_CORS_ALLOW_CREDENTIALS="true" \
+          -e GENERIC_TIMEZONE="America/Vancouver" \
+          -e TZ="America/Vancouver" \
+          -v n8n_data:/home/node/.n8n \
+          docker.n8n.io/n8nio/n8n
         ```
         * Logs: `docker logs n8n -f` | Stop: `docker stop n8n` | Start: `docker start n8n`
 3. **Verify n8n:** Wait for `n8n ready on port 5678` (check terminal/logs).

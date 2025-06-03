@@ -55,67 +55,118 @@ export default function OmniPostAI() {
 
     setIsGenerating(true)
     setProgress(0)
+    setGeneratedPosts([]) // Clear previous posts
     setFeedback({ type: null, message: "" })
 
+    let progressInterval: NodeJS.Timeout | null = null
+
     try {
-      // Simulate progress
-      const progressInterval = setInterval(() => {
+      // Simulate progress while API call is in flight
+      progressInterval = setInterval(() => {
         setProgress((prev) => {
           if (prev >= 90) {
-            clearInterval(progressInterval)
-            return 90
+            if (progressInterval) clearInterval(progressInterval)
+            return 90 // Hold at 90% until API call finishes
           }
           return prev + 10
         })
       }, 300)
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 3000))
+      const webhookUrl = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL
+      if (!webhookUrl) {
+        console.error("N8N webhook URL is not configured. Please set NEXT_PUBLIC_N8N_WEBHOOK_URL in .env.local")
+        throw new Error("Application configuration error: Webhook URL is missing.")
+      }
 
-      setProgress(100)
+      const response = await fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ longFormContent: inputText }),
+      })
 
-      // Mock generated posts with more realistic content
-      const mockPosts: GeneratedPost[] = [
-        {
+      if (progressInterval) clearInterval(progressInterval) // Stop progress simulation
+
+      if (!response.ok) {
+        let errorData
+        try {
+          errorData = await response.json()
+        } catch (e) {
+          // If parsing error response fails, use status text
+          throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`)
+        }
+        console.error("n8n API error response:", errorData)
+        const errorMessage = errorData?.message || errorData?.error?.message || `API request failed with status: ${response.status}`
+        throw new Error(errorMessage)
+      }
+
+      const data = await response.json()
+      
+      // According to MVP_PLAN.md, step 2.9 (FinalOutputSet), data should be wrapped in an "output" key.
+      // And steps 2.5, 2.6, 2.7 name the output properties: twitterPost, linkedinPost, threadsPost.
+      // Each of these should have "content" and "hashtags" properties.
+
+      const n8nOutput = data.output // Access the nested output object
+
+      if (!n8nOutput) {
+        console.error("N8N response is missing the 'output' field:", data)
+        throw new Error("Invalid response structure from n8n: 'output' field missing.")
+      }
+      
+      const newPosts: GeneratedPost[] = []
+
+      if (n8nOutput.twitterPost && typeof n8nOutput.twitterPost === 'string') {
+        newPosts.push({
           platform: "twitter",
-          content:
-            "🚀 Just discovered something game-changing about AI-powered content creation!\n\nThe future of social media is here and it's transforming how we share ideas across platforms.\n\nWhat started as a simple blog post can now become engaging content for every platform. Thread below 👇",
-          hashtags: ["#AI", "#ContentCreation", "#SocialMedia", "#Innovation", "#TechTrends"],
-        },
-        {
+          content: n8nOutput.twitterPost, // Use the direct string value
+          hashtags: [], // Assume hashtags are embedded in content for now, or not separately provided
+        })
+      }
+      if (n8nOutput.linkedinPost && typeof n8nOutput.linkedinPost === 'string') {
+        newPosts.push({
           platform: "linkedin",
-          content:
-            "In today's rapidly evolving digital landscape, the ability to efficiently repurpose long-form content across multiple platforms has become a critical competitive advantage.\n\n🎯 Key insights I've discovered:\n\n→ Consistency across platforms drives 3x more engagement\n→ Platform-specific optimization increases reach by 150%\n→ AI-powered content transformation saves 80% of manual effort\n→ Authentic voice preservation is crucial for brand integrity\n\nThe future of content marketing isn't just about creating more—it's about creating smarter.\n\nWhat's your experience with content repurposing? Share your thoughts below.",
-          hashtags: ["#DigitalMarketing", "#ContentStrategy", "#AI", "#BusinessGrowth", "#MarketingAutomation"],
-        },
-        {
+          content: n8nOutput.linkedinPost, // Use the direct string value
+          hashtags: [], // Assume hashtags are embedded in content for now, or not separately provided
+        })
+      }
+      if (n8nOutput.threadsPost && typeof n8nOutput.threadsPost === 'string') {
+        newPosts.push({
           platform: "threads",
-          content:
-            "Can we talk about how AI is revolutionizing content creation? 🤯\n\nSeriously, the possibilities are endless when you can transform one piece of long-form content into multiple engaging posts tailored for each platform.\n\nI just tried this new approach and the results are mind-blowing. Each platform gets content that actually fits its vibe and audience.\n\nWhat's your experience with AI tools for content? Are you using any? Drop your thoughts below! 👇",
-          hashtags: ["#AI", "#ContentCreation", "#Threads", "#Discussion", "#CreatorEconomy"],
-        },
-      ]
+          content: n8nOutput.threadsPost, // Use the direct string value
+          hashtags: [], // Assume hashtags are embedded in content for now, or not separately provided
+        })
+      }
 
-      setGeneratedPosts(mockPosts)
-      setFeedback({ type: "success", message: "Successfully generated 3 platform-optimized posts from your content!" })
+      if (newPosts.length === 0) {
+         console.warn("N8N response processed, but no valid posts found in the output:", n8nOutput)
+         throw new Error("No posts were generated. The n8n workflow might not have produced the expected output.")
+      }
 
+      setGeneratedPosts(newPosts)
+      setProgress(100)
+      setFeedback({ type: "success", message: `Successfully generated ${newPosts.length} platform-optimized posts!` })
       toast({
         title: "Posts Generated Successfully! ✨",
         description: "Your content has been transformed into platform-specific posts.",
       })
-    } catch (error) {
+
+    } catch (error: any) {
+      if (progressInterval) clearInterval(progressInterval)
+      setProgress(0) // Reset progress on error
+      console.error("Error in handleGenerate:", error)
       setFeedback({
         type: "error",
-        message: "Generation failed. Please try again or contact support if the issue persists.",
+        message: error.message || "Generation failed. Please check the console for details or try again.",
       })
       toast({
         title: "Generation Failed",
-        description: "Something went wrong. Please try again.",
+        description: error.message || "Something went wrong. Please try again.",
         variant: "destructive",
       })
     } finally {
       setIsGenerating(false)
-      setProgress(0)
+      // setProgress(0) // Already handled in success/error, or could be reset here unconditionally
     }
   }
 
