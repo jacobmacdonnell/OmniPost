@@ -133,7 +133,7 @@ export default function LandingPage() {
       </div>
 
       {/* Header */}
-      <header className="relative border-b border-slate-800/60 bg-slate-950/95 backdrop-blur-xl sticky top-0 z-50">
+      <header className="border-slate-800/60 bg-slate-950/95 backdrop-blur-xl sticky top-0 z-50">
         <div className="container mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
