@@ -1,0 +1,468 @@
+{
+  "name": "OmniPost - June 3",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "f87b6abd-a9ad-4cac-9606-02ba20218718",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -440,
+        200
+      ],
+      "id": "d8b43665-ca74-4399-b7c7-adf6198d97f4",
+      "name": "Webhook",
+      "webhookId": "f87b6abd-a9ad-4cac-9606-02ba20218718"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=`You are a Twitter content expert specializing in creating engaging tweets and threads. Your goal is to distill content into concise, attention-grabbing Twitter updates that encourage interaction. You understand Twitter's character limits, the effective use of hashtags, and how to structure threads for maximum impact and readability. Your tone should be conversational and dynamic.`",
+              "role": "system"
+            },
+            {
+              "content": "=`Based on the following content analysis:\n{{ JSON.stringify($('Content Analyzer').item.json.choices[0].message.content) }}\n\nTransform the original content provided below into an engaging and concise Twitter thread. Aim for 3-5 tweets, but adjust based on content length and complexity. A single, impactful tweet may be appropriate for very short content.\n\nORIGINAL CONTENT TO TRANSFORM:\n{{ $('Prepare Input').item.json.longFormContent }}\n\nREQUIREMENTS:\n- **Hook (Tweet 1):** The first tweet MUST be a compelling hook (under 280 characters) that grabs attention immediately and makes users want to read the entire thread. It should be tailored to the 'mainTone' ('{{ $('Content Analyzer').item.json.choices[0].message.content.mainTone }}') and 'targetAudienceIntent' ('{{ $('Content Analyzer').item.json.choices[0].message.content.targetAudienceIntent }}').\n- **Thread Structure & Cohesion:** Break complex ideas into digestible, single-focus tweets. Ensure the thread tells a cohesive story or presents a clear argument from start to finish.\n- **Conciseness:** Each tweet in the thread must be concise and easy to read quickly, suitable for Twitter's fast-paced environment. While not every tweet needs to be at the character limit, avoid overly long sentences or paragraphs within a single tweet.\n- **Hashtags:** Use 2-3 relevant and targeted hashtags per tweet. Focus on hashtags derived from 'keyTopics' (like {{ ($('Content Analyzer').item.json.choices[0].message.content.keyTopics && $('Content Analyzer').item.json.choices[0].message.content.keyTopics.length > 0) ? \"'\" + $('Content Analyzer').item.json.choices[0].message.content.keyTopics.join(\"', '\") + \"'\" : \"'relevant topics'\" }}) and the identified 'industry' ('{{ $('Content Analyzer').item.json.choices[0].message.content.industry }}'). Avoid over-tagging.\n- **Tone:** Ensure a conversational and engaging tone, precisely adapted from the 'mainTone' ('{{ $('Content Analyzer').item.json.choices[0].message.content.mainTone }}').\n- **Actionable Value:** Include actionable takeaways or key points if present in the original content.\n- **Engagement CTA (Last Tweet):** End the thread with an engaging question or a clear call-to-action to encourage replies, retweets, or further discussion.\n- **Numbering:** Strictly number tweets in the thread using the format \"1/X\", \"2/X\", etc., where X is the total number of tweets in the thread. (e.g., 1/4, 2/4, 3/4, 4/4).\n- **Complexity Adaptation:** If 'estimatedComplexity' ('{{ $('Content Analyzer').item.json.choices[0].message.content.estimatedComplexity }}') is 'expert_level', you can touch on more nuanced points concisely. If it's 'beginner_friendly', ensure concepts are highly accessible and explained very simply.\n\nOUTPUT FORMAT (Reminder):\nIf a single tweet: Just the tweet content.\nIf a thread: Format as \"1/X: [content]\\n2/X: [content]\\n...\" with each tweet clearly delineated by the numbering and on new lines.`"
+            }
+          ]
+        },
+        "simplify": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        376,
+        200
+      ],
+      "id": "e57aced2-a77a-4fe7-b75a-8e48380933d2",
+      "name": "OpenAI - Twitter",
+      "alwaysOutputData": false,
+      "credentials": {
+        "openAiApi": {
+          "id": "T1zGEMiMAgCMOgA5",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=`You are a professional LinkedIn content strategist. Your primary mission is to transform user-provided content into compelling LinkedIn posts that drive engagement and provide professional value. You focus on extracting key business insights, maintaining a professional yet engaging tone, incorporating relevant hashtags, including calls-to-action, ensuring readability, adhering to optimal length, and positioning the content as thought leadership. Your output should always be a well-structured LinkedIn post with clear paragraphs and strategic hashtag placement.`",
+              "role": "system"
+            },
+            {
+              "content": "=`Based on the following content analysis:\n{{ JSON.stringify($('Content Analyzer').item.json.choices[0].message.content) }}\n\nTransform the original content provided below into a compelling LinkedIn post designed for professional engagement and thought leadership.\n\nORIGINAL CONTENT TO TRANSFORM:\n{{ $('Prepare Input').item.json.longFormContent }}\n\nREQUIREMENTS:\n- **Insight Focus:** Extract the most significant key business insights, value propositions, or actionable takeaways from the content. If applicable, explicitly present a \"Key Insight:\" or \"Business Takeaway:\" section for emphasis.\n- **Tone and Style:** Adapt your tone to be professional and engaging, precisely reflecting the 'mainTone' ('{{ $('Content Analyzer').item.json.choices[0].message.content.mainTone }}'), the 'industry' ('{{ $('Content Analyzer').item.json.choices[0].message.content.industry }}'), and the 'targetAudienceIntent' ('{{ $('Content Analyzer').item.json.choices[0].message.content.targetAudienceIntent }}') from the analysis.\n- **Hashtags:** Include 3-5 highly relevant and targeted hashtags. Prioritize hashtags derived from 'keyTopics' (e.g., {{ ($('Content Analyzer').item.json.choices[0].message.content.keyTopics && $('Content Analyzer').item.json.choices[0].message.content.keyTopics.length > 0) ? \"'\" + $('Content Analyzer').item.json.choices[0].message.content.keyTopics.join(\"', '\") + \"'\" : \"'general topics'\" }}) and the specific 'industry'.\n- **Call to Action (CTA):** Conclude with a strong, thought-provoking question or a clear call-to-action that encourages professional discussion and is suitable for the 'targetAudienceIntent'.\n- **Readability:** Format the post with clear paragraphs, bullet points if appropriate for lists, and proper line breaks for excellent readability on LinkedIn.\n- **Length:** Aim for an optimal length of 150-300 words. Be concise yet impactful.\n- **Complexity Adaptation:** If 'estimatedComplexity' ('{{ $('Content Analyzer').item.json.choices[0].message.content.estimatedComplexity }}') is 'expert_level', incorporate nuanced, in-depth points. If it's 'beginner_friendly', ensure concepts are explained very simply and are highly accessible.\n- **Audience Focus:** Ensure the language and examples resonate with the 'targetAudienceIntent'.\n\nOUTPUT FORMAT (Reminder):\nCreate a well-structured LinkedIn post with clear paragraphs and strategic hashtag placement, optimized for professional engagement.`"
+            }
+          ]
+        },
+        "simplify": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        376,
+        0
+      ],
+      "id": "3483b7b2-3953-445a-af62-bd7938f095ce",
+      "name": "OpenAI - Linkedin",
+      "credentials": {
+        "openAiApi": {
+          "id": "T1zGEMiMAgCMOgA5",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3d9beacb-ad84-4d39-93f0-3de9f5566652",
+              "name": "longFormContent",
+              "value": "={{ $json.body.longFormContent }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -220,
+        200
+      ],
+      "id": "478d5b5c-144c-4082-822b-07ff42510bfb",
+      "name": "Prepare Input",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6b542c6d-93cf-4879-a8ba-7d29a4f7fbc1",
+              "name": "twitterPost",
+              "value": "={{ $json.choices[0].message.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        752,
+        200
+      ],
+      "id": "3f7c463f-744c-4586-a7a1-46cdaac0f673",
+      "name": "Format Twitter"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6b542c6d-93cf-4879-a8ba-7d29a4f7fbc1",
+              "name": "linkedinPost",
+              "value": "={{ $json.choices[0].message.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        752,
+        0
+      ],
+      "id": "ab5d90c7-33c5-4e9f-83eb-e31cc6813a49",
+      "name": "Format Linkedin"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "numberInputs": 3,
+        "options": {
+          "includeUnpaired": true
+        }
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        972,
+        200
+      ],
+      "id": "18ab1c14-0e68-4bab-9f29-c19331c2d6f2",
+      "name": "Merge Posts"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=`You are a Threads content creator focused on building community and fostering engagement. Your expertise lies in transforming text into visually appealing, conversational Threads posts. You leverage emojis strategically, understand the importance of good formatting (line breaks, spacing, lists), and aim to make content feel personal and approachable to encourage discussion.`",
+              "role": "system"
+            },
+            {
+              "content": "=`Based on the following content analysis:\n{{ JSON.stringify($('Content Analyzer').item.json.choices[0].message.content) }}\n\nTransform the original content provided below into a single, visually appealing, and highly engaging Threads post designed to spark community interaction.\n\nORIGINAL CONTENT TO TRANSFORM:\n{{ $('Prepare Input').item.json.longFormContent }}\n\nREQUIREMENTS:\n- **Emoji Integration:** Use emojis strategically and tastefully throughout the post to enhance visual appeal, convey emotion, and break up text. Ensure they align with the 'mainTone' ('{{ $('Content Analyzer').item.json.choices[0].message.content.mainTone }}') and 'contentType' ('{{ $('Content Analyzer').item.json.choices[0].message.content.contentType }}').\n- **Formatting for Engagement:** Ensure excellent readability with generous use of line breaks, thoughtful spacing between paragraphs or ideas. Utilize formatting like bolding for subheadings or key phrases to enhance readability and visual structure if appropriate. If the 'contentType' ('{{ $('Content Analyzer').item.json.choices[0].message.content.contentType }}') suggests lists (e.g., steps, tips, features), present them clearly using bullet points (e.g., • item) or numbered lists.\n- **Conversational Focus:** Prioritize storytelling, personal connection, or sparking a friendly conversation, guided by the 'mainTone' ('{{ $('Content Analyzer').item.json.choices[0].message.content.mainTone }}') and 'targetAudienceIntent' ('{{ $('Content Analyzer').item.json.choices[0].message.content.targetAudienceIntent }}'). Make it feel authentic and human.\n- **Hashtags:** Include 3-5 relevant and engaging hashtags. These should be integrated naturally within the text if possible, or grouped at the end. Draw from 'keyTopics' (like {{ ($('Content Analyzer').item.json.choices[0].message.content.keyTopics && $('Content Analyzer').item.json.choices[0].message.content.keyTopics.length > 0) ? \"'\" + $('Content Analyzer').item.json.choices[0].message.content.keyTopics.join(\"', '\") + \"'\" : \"'community topics'\" }}) and the identified 'industry' ('{{ $('Content Analyzer').item.json.choices[0].message.content.industry }}').\n- **Tone:** Maintain a friendly, approachable, and inviting tone, precisely adapted from the 'mainTone' ('{{ $('Content Analyzer').item.json.choices[0].message.content.mainTone }}').\n- **Interactive CTA:** End with a question or prompt specifically designed to encourage direct replies, share experiences, or start a community discussion.\n- **Complexity Adaptation:** If 'estimatedComplexity' ('{{ $('Content Analyzer').item.json.choices[0].message.content.estimatedComplexity }}') is 'expert_level', present insights in an accessible way. If it's 'beginner_friendly', keep the language exceptionally simple and inviting.\n\nOUTPUT FORMAT (Reminder):\nA single, well-formatted Threads post with emojis, clear paragraphs/sections, good spacing, and hashtags naturally integrated, ready for publishing. Ensure it reads as one continuous post, not a numbered series.`"
+            }
+          ]
+        },
+        "simplify": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        376,
+        400
+      ],
+      "id": "e5dc7c18-ada7-43ce-98f9-b9dd036e17b6",
+      "name": "OpenAI - Threads",
+      "credentials": {
+        "openAiApi": {
+          "id": "T1zGEMiMAgCMOgA5",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6b542c6d-93cf-4879-a8ba-7d29a4f7fbc1",
+              "name": "threadsPost",
+              "value": "={{ $json.choices[0].message.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        752,
+        400
+      ],
+      "id": "e74e865d-c0ed-4c79-af91-e9c5cbf083ee",
+      "name": "Format Threads"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.3,
+      "position": [
+        1412,
+        200
+      ],
+      "id": "89255f0f-27bf-42ae-9f01-442591f45899",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "35206dc1-2234-42db-869e-619f787c3953",
+              "name": "output",
+              "value": "={{ $json }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1192,
+        200
+      ],
+      "id": "7530c043-a484-48a9-934e-3df2e12da4bc",
+      "name": "Format Output"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=`You are an expert content analyst. Your task is to analyze the provided text and output your findings strictly in the JSON format specified. Do not include any explanatory text, markdown formatting, or anything else before or after the JSON object.`",
+              "role": "system"
+            },
+            {
+              "content": "=`Analyze the following content and extract key characteristics. Provide your analysis STRICTLY in the following JSON format.\n\nCONTENT:\n{{ $('Prepare Input').item.json.longFormContent || \"No content provided.\" }}\n\nJSON OUTPUT FORMAT:\n{\n  \"contentType\": \"blog_post_or_article|news_announcement|product_description|case_study|opinion_piece|technical_document|promotional_copy|other\",\n  \"industry\": \"technology|marketing_and_advertising|finance_and_banking|healthcare_and_wellness|education_and_elearning|retail_and_ecommerce|business_and_consulting|lifestyle_and_entertainment|general_or_multiple\",\n  \"mainTone\": \"professional_and_formal|casual_and_conversational|technical_and_detailed|inspirational_and_motivational|humorous_and_witty|neutral_and_informative\",\n  \"keyTopics\": [\"topic1\", \"topic2\", \"topic3_max_5\"],\n  \"targetAudienceIntent\": \"educate_professionals|inform_general_consumers|engage_technical_experts|attract_potential_customers|share_with_peers\",\n  \"estimatedWordCount\": {{ typeof $('Prepare Input').item.json.longFormContent === 'string' ? $('Prepare Input').item.json.longFormContent.split(/\\s+/).filter(Boolean).length : 0 }},\n  \"estimatedComplexity\": \"beginner_friendly|intermediate_level|expert_level\"\n}`"
+            }
+          ]
+        },
+        "simplify": false,
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        0,
+        200
+      ],
+      "id": "2191bc57-2de5-436e-bfdf-a6174c07e126",
+      "name": "Content Analyzer",
+      "credentials": {
+        "openAiApi": {
+          "id": "T1zGEMiMAgCMOgA5",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Prepare Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI - Twitter": {
+      "main": [
+        [
+          {
+            "node": "Format Twitter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI - Linkedin": {
+      "main": [
+        [
+          {
+            "node": "Format Linkedin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Input": {
+      "main": [
+        [
+          {
+            "node": "Content Analyzer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Twitter": {
+      "main": [
+        [
+          {
+            "node": "Merge Posts",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Format Linkedin": {
+      "main": [
+        [
+          {
+            "node": "Merge Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Posts": {
+      "main": [
+        [
+          {
+            "node": "Format Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI - Threads": {
+      "main": [
+        [
+          {
+            "node": "Format Threads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Threads": {
+      "main": [
+        [
+          {
+            "node": "Merge Posts",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Format Output": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content Analyzer": {
+      "main": [
+        [
+          {
+            "node": "OpenAI - Twitter",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "OpenAI - Linkedin",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "OpenAI - Threads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Vancouver",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "21081015-42bb-489e-9bba-07c98fa0c0b7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ae0aee2e42c05965c8da048fc8e2eac1fe7283d21ad18b5b3ce702df4f24811f"
+  },
+  "id": "zDR9PVunBAFYansM",
+  "tags": []
+}
