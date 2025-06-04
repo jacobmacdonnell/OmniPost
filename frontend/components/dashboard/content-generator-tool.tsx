@@ -62,17 +62,32 @@ export default function ContentGeneratorTool() {
     setFeedback({ type: null, message: "" })
 
     let progressInterval: NodeJS.Timeout | null = null
+    const SIMULATION_TARGET_PERCENT = 95;
+    const SIMULATION_INTERVAL_MS = 300;
+    const SIMULATION_INCREMENT = 2;
 
     try {
       progressInterval = setInterval(() => {
         setProgress((prev) => {
-          if (prev >= 90) {
-            if (progressInterval) clearInterval(progressInterval)
-            return 90
+          if (prev >= SIMULATION_TARGET_PERCENT) {
+            if (progressInterval) {
+              clearInterval(progressInterval);
+              progressInterval = null; 
+            }
+            return SIMULATION_TARGET_PERCENT;
           }
-          return prev + 10
-        })
-      }, 300)
+          
+          let newProgress = prev + SIMULATION_INCREMENT;
+          if (newProgress >= SIMULATION_TARGET_PERCENT) {
+            newProgress = SIMULATION_TARGET_PERCENT;
+            if (progressInterval) {
+              clearInterval(progressInterval);
+              progressInterval = null;
+            }
+          }
+          return newProgress;
+        });
+      }, SIMULATION_INTERVAL_MS);
 
       const webhookUrl = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL
       if (!webhookUrl) {
@@ -88,7 +103,10 @@ export default function ContentGeneratorTool() {
         body: JSON.stringify({ longFormContent: inputText }),
       })
 
-      if (progressInterval) clearInterval(progressInterval)
+      if (progressInterval) {
+        clearInterval(progressInterval)
+        progressInterval = null;
+      }
 
       if (!response.ok) {
         let errorData
@@ -161,7 +179,10 @@ export default function ContentGeneratorTool() {
       })
 
     } catch (error: any) {
-      if (progressInterval) clearInterval(progressInterval)
+      if (progressInterval) {
+        clearInterval(progressInterval);
+        progressInterval = null;
+      }
       setProgress(0) 
       console.error("Error in handleGenerate:", error)
       setFeedback({
@@ -271,6 +292,13 @@ export default function ContentGeneratorTool() {
     }
   }
 
+  const getProgressMessage = (progress: number) => {
+    if (progress < 20) return "Starting up the AI engine...";
+    if (progress < 40) return "Analyzing your content...";
+    if (progress < 85) return "Generating platform-optimized posts...";
+    if (progress < 100) return "Finalizing and reviewing results...";
+  };
+
   return (
     <div className="w-full max-w-6xl mx-auto"> {/* Retain max-width for content, but allow DashboardLayout to control overall padding */}
       <div className="text-center mb-6"> {/* Simplified spacing */}
@@ -326,7 +354,7 @@ export default function ContentGeneratorTool() {
           {isGenerating && (
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-400">Generating posts...</span>
+                <span className="text-slate-400">{getProgressMessage(progress)}</span>
                 <span className="text-slate-400">{progress}%</span>
               </div>
               <Progress value={progress} className="h-2 bg-slate-800" />

@@ -293,9 +293,9 @@ export default function LandingPage() {
                 </Link>
                 <div className="w-full sm:w-auto">
                   <Button className="w-full sm:w-auto bg-slate-800 text-white hover:bg-slate-700 hover:text-white px-6 py-2.5">
-                    Watch Demo
+                  Watch Demo
                     <Play className="ml-2 h-4 w-4" />
-                  </Button>
+                </Button>
                 </div>
               </div>
 
@@ -536,7 +536,7 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-3 gap-6">
             {pricingPlans.map((plan, index) => {
               let displayPrice = plan.displayPrice || `$${billingPeriod === "monthly" ? plan.monthlyPrice : plan.yearlyPrice}`;
-              return (
+                return (
                 <div key={index} className="flex">
                   <Card
                     className={`w-full flex flex-col bg-slate-800/90 backdrop-blur-sm ${
@@ -598,9 +598,9 @@ export default function LandingPage() {
                     </CardContent>
                   </Card>
                 </div>
-              )
-            })}
-          </div>
+                )
+              })}
+            </div>
 
           {/* Enterprise CTA - Temporarily Disabled */}
           {/* <Card className="mt-10 bg-slate-800/90 border-slate-700/70 backdrop-blur-sm shadow-lg">
