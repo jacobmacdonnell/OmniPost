@@ -33,7 +33,8 @@ import { useState } from "react"
 const pricingPlans = [
   {
     name: "Starter",
-    description: "Perfect for trying out OmniPost.ai",
+    description: "Try OmniPost free",
+    displayPrice: "FREE",
     monthlyPrice: "0",
     yearlyPrice: "0",
     yearlySavings: "0",
@@ -44,7 +45,8 @@ const pricingPlans = [
   },
   {
     name: "Pro",
-    description: "Ideal for most content creators",
+    description: "For creators who want more",
+    displayPrice: null,
     monthlyPrice: "20",
     yearlyPrice: "16",
     yearlySavings: "48",
@@ -62,7 +64,8 @@ const pricingPlans = [
   },
   {
     name: "Max",
-    description: "For maximum content creation",
+    description: "For teams & agencies",
+    displayPrice: null,
     monthlyPrice: "30",
     yearlyPrice: "24",
     yearlySavings: "72",
@@ -209,7 +212,7 @@ export default function LandingPage() {
 
             {/* Desktop CTA */}
             <div className="hidden md:flex items-center space-x-3">
-              <Button className="border-slate-700 bg-slate-800 text-white hover:bg-white hover:text-slate-600 hover:border-slate-600 px-4 py-2">
+              <Button className="border-slate-700 bg-slate-800 text-white hover:bg-slate-700 hover:text-white hover:border-slate-500 px-4 py-2">
                 Log In
               </Button>
               <Button className="text-sm bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-4 py-2">
@@ -263,8 +266,8 @@ export default function LandingPage() {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Hero Content */}
             <div className="text-center lg:text-left">
-              <Badge className="inline-flex items-center space-x-2 bg-blue-500/10 text-blue-400 border-blue-500/20 px-3 py-1 rounded-full text-xs font-medium mb-4">
-                <Zap className="h-3 w-3" />
+              <Badge className="inline-flex items-center space-x-2 bg-blue-500/10 text-blue-400 border-blue-500/20 px-3 py-1 rounded-full text-sm font-medium mb-4">
+                <Zap className="h-4 w-4" />
                 <span>AI-Powered Content Transformation</span>
               </Badge>
 
@@ -282,16 +285,18 @@ export default function LandingPage() {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-8">
-                <Link href="/dashboard">
-                  <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2.5">
+                <Link href="/dashboard" className="w-full sm:w-auto">
+                  <Button className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2.5">
                     Try For Free
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
-                <Button variant="outline" className="border-slate-700 bg-slate-800 text-white hover:bg-white hover:text-slate-600 hover:border-slate-600 px-6 py-2.5">
-                  <Play className="mr-2 h-4 w-4" />
-                  Watch Demo
-                </Button>
+                <div className="w-full sm:w-auto">
+                  <Button className="w-full sm:w-auto bg-slate-800 text-white hover:bg-slate-700 hover:text-white px-6 py-2.5">
+                    Watch Demo
+                    <Play className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
               </div>
 
               {/* Social Proof */}
@@ -383,11 +388,11 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-16 bg-slate-900">
+      <section id="features" className="py-12 bg-slate-900 scroll-mt-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <Badge className="inline-flex items-center space-x-2 bg-purple-500/10 text-purple-400 border-purple-500/20 px-3 py-1 rounded-full text-xs font-medium mb-4">
-              <Sparkles className="h-3 w-3" />
+            <Badge className="inline-flex items-center space-x-2 bg-purple-500/10 text-purple-400 border-purple-500/20 px-3 py-1 rounded-full text-sm font-medium mb-4">
+              <Sparkles className="h-4 w-4" />
               <span>Features</span>
             </Badge>
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
@@ -408,7 +413,7 @@ export default function LandingPage() {
                 <CardContent className="p-6">
                   <div className="inline-flex p-2 rounded-lg bg-blue-500/10 text-blue-400 mb-4">{feature.icon}</div>
                   <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">{feature.description}</p>
+                  <p className="text-white text-sm leading-relaxed">{feature.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -417,10 +422,10 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-16 bg-slate-950">
+      <section id="how-it-works" className="py-12 bg-slate-950 scroll-mt-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <Badge className="inline-flex items-center space-x-2 bg-green-500/10 text-green-400 border-green-500/20 px-3 py-1 rounded-full text-xs font-medium mb-4">
+            <Badge className="inline-flex items-center space-x-2 bg-green-500/10 text-green-400 border-green-500/20 px-3 py-1 rounded-full text-sm font-medium mb-4">
               <Clock className="h-3 w-3" />
               <span>How It Works</span>
             </Badge>
@@ -463,7 +468,7 @@ export default function LandingPage() {
                   </div>
                   <div className="inline-flex p-2 rounded-lg bg-blue-500/10 text-blue-400 mb-4">{item.icon}</div>
                   <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">{item.description}</p>
+                  <p className="text-white text-sm leading-relaxed">{item.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -481,10 +486,10 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-16 bg-slate-900">
+      <section id="pricing" className="py-12 bg-slate-900 scroll-mt-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <Badge className="inline-flex items-center space-x-2 bg-blue-500/10 text-blue-400 border-blue-500/20 px-3 py-1 rounded-full text-xs font-medium mb-4">
+            <Badge className="inline-flex items-center space-x-2 bg-blue-500/10 text-blue-400 border-blue-500/20 px-3 py-1 rounded-full text-sm font-medium mb-4">
               <TrendingUp className="h-3 w-3" />
               <span>Pricing</span>
             </Badge>
@@ -508,7 +513,7 @@ export default function LandingPage() {
                   ${
                     billingPeriod === "monthly"
                       ? "bg-blue-500 text-white shadow-md"
-                      : "text-slate-300 hover:text-slate-100 hover:bg-slate-700/50"
+                      : "text-slate-300 hover:text-white"
                   }`}
               >
                 Monthly
@@ -519,7 +524,7 @@ export default function LandingPage() {
                   ${
                     billingPeriod === "yearly"
                       ? "bg-blue-500 text-white shadow-md"
-                      : "text-slate-300 hover:text-slate-100 hover:bg-slate-700/50"
+                      : "text-slate-300 hover:text-white"
                   }`}
               >
                 Yearly (save 20%)
@@ -530,7 +535,7 @@ export default function LandingPage() {
           {/* Pricing Cards with Equal Heights */}
           <div className="grid md:grid-cols-3 gap-6">
             {pricingPlans.map((plan, index) => {
-              let displayPrice = (plan.name === "Starter") ? "Free" : `$${billingPeriod === "monthly" ? plan.monthlyPrice : plan.yearlyPrice}`;
+              let displayPrice = plan.displayPrice || `$${billingPeriod === "monthly" ? plan.monthlyPrice : plan.yearlyPrice}`;
               return (
                 <div key={index} className="flex">
                   <Card
@@ -540,7 +545,7 @@ export default function LandingPage() {
                       plan.popular ? "shadow-blue-500/10" : ""
                     }`}
                   >
-                    <CardContent className="p-6 flex flex-col h-full">
+                    <CardContent className="p-8 flex flex-col h-full">
                       {/* Popular Badge */}
                       {plan.popular && (
                         <div className="absolute -top-3 inset-x-0 flex justify-center">
@@ -552,9 +557,9 @@ export default function LandingPage() {
 
                       {/* Header Section */}
                       <div className="text-center mb-4 pt-0">
-                        <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
-                        <div className="mb-4 h-[72px]">
-                          <span className="text-4xl font-semibold text-white">{displayPrice}</span>
+                        <h3 className="text-2xl font-semibold text-white mb-2">{plan.name}</h3>
+                        <div className="mb-4 min-h-[72px]">
+                          <span className="text-4xl font-extrabold text-white">{displayPrice}</span>
                           {plan.name !== "Starter" && <span className="text-slate-400 text-sm ml-1">/month</span>}
                           {billingPeriod === "yearly" && plan.yearlySavings !== "0" && plan.name !== "Starter" && (
                             <div className="text-green-400 text-sm font-medium mt-2">
@@ -562,7 +567,8 @@ export default function LandingPage() {
                             </div>
                           )}
                         </div>
-                        <p className="text-slate-100 text-lg mb-3">{plan.description}</p>
+                        <div className="border-b border-slate-600 my-4"></div>
+                        <p className="text-white text-lg font-semibold mb-3 text-left">{plan.description}</p>
                       </div>
 
                       {/* Features Section - Flex Grow */}
@@ -571,7 +577,7 @@ export default function LandingPage() {
                           {plan.features.map((feature, i) => (
                             <li key={i} className="flex items-center space-x-2">
                               <Check className="h-4 w-4 text-green-400 shrink-0" />
-                              <span className="text-slate-100 text-sm">{feature}</span>
+                              <span className="text-white text-sm">{feature}</span>
                             </li>
                           ))}
                         </ul>
@@ -612,10 +618,10 @@ export default function LandingPage() {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-16 bg-slate-950">
+      <section id="testimonials" className="py-12 bg-slate-950 scroll-mt-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <Badge className="inline-flex items-center space-x-2 bg-yellow-500/10 text-yellow-400 border-yellow-500/20 px-3 py-1 rounded-full text-xs font-medium mb-4">
+            <Badge className="inline-flex items-center space-x-2 bg-yellow-500/10 text-yellow-400 border-yellow-500/20 px-3 py-1 rounded-full text-sm font-medium mb-4">
               <Users className="h-3 w-3" />
               <span>Testimonials</span>
             </Badge>
@@ -649,7 +655,7 @@ export default function LandingPage() {
                   </div>
 
                   {/* Quote */}
-                  <blockquote className="text-slate-300 text-sm leading-relaxed mb-4 italic">
+                  <blockquote className="text-white text-sm leading-relaxed mb-4 italic">
                     "{testimonial.content}"
                   </blockquote>
 
@@ -662,7 +668,7 @@ export default function LandingPage() {
                     />
                     <div>
                       <div className="font-medium text-white text-sm">{testimonial.name}</div>
-                      <div className="text-xs text-slate-400">
+                      <div className="text-xs text-white">
                         {testimonial.role}, {testimonial.company}
                       </div>
                     </div>
@@ -675,10 +681,10 @@ export default function LandingPage() {
       </section>
 
       {/* FAQ Section */}
-      <section id="faq" className="py-16 bg-slate-900">
+      <section id="faq" className="py-12 bg-slate-900 scroll-mt-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <Badge className="inline-flex items-center space-x-2 bg-purple-500/10 text-purple-400 border-purple-500/20 px-3 py-1 rounded-full text-xs font-medium mb-4">
+            <Badge className="inline-flex items-center space-x-2 bg-purple-500/10 text-purple-400 border-purple-500/20 px-3 py-1 rounded-full text-sm font-medium mb-4">
               <Globe className="h-3 w-3" />
               <span>FAQ</span>
             </Badge>
@@ -698,7 +704,7 @@ export default function LandingPage() {
               <Card key={index} className="bg-slate-800/70 border-slate-700/60 backdrop-blur-sm hover:border-slate-600 transition-colors shadow-lg">
                 <CardContent className="p-6">
                   <h3 className="font-semibold text-white mb-2">{faq.question}</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">{faq.answer}</p>
+                  <p className="text-white text-sm leading-relaxed">{faq.answer}</p>
                 </CardContent>
               </Card>
             ))}
@@ -707,7 +713,7 @@ export default function LandingPage() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600">
+      <section className="py-12 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
             Ready to Transform Your{" "}
@@ -720,16 +726,11 @@ export default function LandingPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/dashboard">
-              <Button className="bg-white text-slate-900 hover:bg-gray-100 px-6 py-2.5">
+              <Button className="bg-slate-800 text-white hover:bg-slate-700 hover:text-white px-6 py-2.5">
                 Try For Free
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
-            <Button
-              className="border-slate-700 bg-slate-800 text-white hover:bg-white hover:text-slate-600 hover:border-slate-600 px-6 py-2.5"
-            >
-              Schedule Demo
-            </Button>
           </div>
         </div>
       </section>
