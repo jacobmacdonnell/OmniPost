@@ -132,7 +132,7 @@ const faqs = [
   {
     question: "Which social media platforms are supported?",
     answer:
-      "Currently, OmniPost.ai supports Twitter, LinkedIn, and Threads. We're actively working on adding support for Instagram, Facebook, and Pinterest in our next major update.",
+      "Currently, OmniPost.ai supports Twitter, LinkedIn, Threads, Substack, and Medium. We're actively working on adding support for Instagram, Facebook, and Pinterest in our next major update.",
   },
   {
     question: "Is there a limit to how much content I can transform?",

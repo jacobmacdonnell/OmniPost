@@ -11,7 +11,7 @@ import {
   Copy,
   Loader2,
   Sparkles,
-  Twitter,
+  X,
   Linkedin,
   MessageCircle,
   Zap,
@@ -19,11 +19,14 @@ import {
   CheckCircle,
   AlertCircle,
   FileText,
+  BookOpen,
+  Newspaper,
+  Eye,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface GeneratedPost {
-  platform: "twitter" | "linkedin" | "threads"
+  platform: "twitter" | "linkedin" | "threads" | "substack" | "medium"
   content: string
   hashtags: string[]
 }
@@ -129,6 +132,20 @@ export default function ContentGeneratorTool() {
           hashtags: [], 
         })
       }
+      if (n8nOutput.substackPost && typeof n8nOutput.substackPost === 'string') {
+        newPosts.push({
+          platform: "substack",
+          content: n8nOutput.substackPost,
+          hashtags: [],
+        })
+      }
+      if (n8nOutput.mediumPost && typeof n8nOutput.mediumPost === 'string') {
+        newPosts.push({
+          platform: "medium",
+          content: n8nOutput.mediumPost,
+          hashtags: [],
+        })
+      }
 
       if (newPosts.length === 0) {
          console.warn("N8N response processed, but no valid posts found in the output:", n8nOutput)
@@ -181,11 +198,15 @@ export default function ContentGeneratorTool() {
   const getPlatformIcon = (platform: string, iconColor: string) => {
     switch (platform) {
       case "twitter":
-        return <Twitter className={cn("h-4 w-4", iconColor)} />
+        return <X className={cn("h-4 w-4", iconColor)} />
       case "linkedin":
         return <Linkedin className={cn("h-4 w-4", iconColor)} />
       case "threads":
         return <MessageCircle className={cn("h-4 w-4", iconColor)} />
+      case "substack":
+        return <Newspaper className={cn("h-4 w-4", iconColor)} />
+      case "medium":
+        return <BookOpen className={cn("h-4 w-4", iconColor)} />
       default:
         return null
     }
@@ -219,6 +240,24 @@ export default function ContentGeneratorTool() {
           button: "hover:bg-slate-700/50 text-slate-300 hover:text-white",
           name: "Threads",
           icon: "text-purple-400",
+        }
+      case "substack":
+        return {
+          card: "border-slate-700/50 bg-slate-900/50 hover:border-slate-600/50",
+          header: "text-slate-200",
+          accent: "bg-orange-500/20 text-orange-300",
+          button: "hover:bg-slate-700/50 text-slate-300 hover:text-white",
+          name: "Substack",
+          icon: "text-orange-400",
+        }
+      case "medium":
+        return {
+          card: "border-slate-700/50 bg-slate-900/50 hover:border-slate-600/50",
+          header: "text-slate-200",
+          accent: "bg-green-500/20 text-green-300",
+          button: "hover:bg-slate-700/50 text-slate-300 hover:text-white",
+          name: "Medium",
+          icon: "text-green-400",
         }
       default:
         return {
@@ -331,61 +370,102 @@ export default function ContentGeneratorTool() {
       {generatedPosts.length > 0 && (
         <div className="space-y-6">
           <div className="text-center">
-            <h3 className="text-2xl font-bold text-white mb-2">Generated Posts</h3>
-            <p className="text-slate-400">Click the copy button to copy each post with hashtags</p>
+            <h3 className="text-2xl font-bold text-white">Generated Posts</h3>
+            <p className="text-slate-400 mt-1">Your content has been optimized for each platform</p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-3">
-            {generatedPosts.map((post, index) => {
-              const styles = getPlatformStyles(post.platform)
-              return (
-                <Card
-                  key={index}
-                  className={cn(
-                    "border transition-all duration-300 hover:scale-[1.02] backdrop-blur-sm shadow-lg hover:shadow-xl",
-                    styles.card,
-                  )}
-                >
-                  <CardHeader className="pb-3">
-                    <CardTitle className="flex items-center justify-between">
-                      <div className={cn("flex items-center gap-2 text-sm font-semibold", styles.header)}>
-                        <div className={cn("p-1.5 rounded-md", styles.accent)}>
-                          {getPlatformIcon(post.platform, styles.icon)}
-                        </div>
-                        {styles.name}
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => copyToClipboard(post.content, post.hashtags, post.platform)}
-                        className={cn("h-8 w-8 p-0 rounded-md transition-colors", styles.button)}
-                      >
-                        <Copy className="h-3 w-3" />
-                      </Button>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="bg-slate-800/60 rounded-lg p-4 border border-slate-700/30">
-                      <div className="space-y-3">
-                        <p className="text-slate-100 text-sm leading-relaxed whitespace-pre-wrap">{post.content}</p>
-                        <div className="pt-2 border-t border-slate-700/30">
-                          <div className="flex flex-wrap gap-1.5">
-                            {post.hashtags.map((hashtag, hashIndex) => (
-                              <span
-                                key={hashIndex}
-                                className={cn("text-xs px-2 py-1 rounded-md font-medium", styles.accent)}
-                              >
-                                {hashtag}
-                              </span>
-                            ))}
+          <div className="relative">
+            {/* Posts Carousel */}
+            <div className="overflow-x-auto pb-6 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800">
+              <div className="flex gap-6 min-w-max px-1">
+                {generatedPosts.map((post, index) => {
+                  const styles = getPlatformStyles(post.platform);
+                  return (
+                    <Card
+                      key={index}
+                      className={cn(
+                        "w-[400px] border backdrop-blur-sm shadow-lg",
+                        styles.card,
+                      )}
+                    >
+                      <CardHeader className="pb-3">
+                        <CardTitle className="flex items-center justify-between">
+                          <div className={cn("flex items-center gap-2 text-sm font-semibold", styles.header)}>
+                            <div className={cn("p-1.5 rounded-md", styles.accent)}>
+                              {getPlatformIcon(post.platform, styles.icon)}
+                            </div>
+                            {styles.name}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className={cn("h-8 w-8 p-0 rounded-md", styles.button)}
+                              onClick={() => {
+                                const previewWindow = window.open('', '_blank');
+                                if (previewWindow) {
+                                  previewWindow.document.write(`
+                                    <html>
+                                      <head>
+                                        <title>${styles.name} Preview</title>
+                                        <style>
+                                          body { 
+                                            font-family: system-ui, -apple-system, sans-serif;
+                                            max-width: 600px;
+                                            margin: 40px auto;
+                                            padding: 20px;
+                                            line-height: 1.6;
+                                          }
+                                          .content { white-space: pre-wrap; }
+                                        </style>
+                                      </head>
+                                      <body>
+                                        <div class="content">${post.content}</div>
+                                      </body>
+                                    </html>
+                                  `);
+                                }
+                              }}
+                            >
+                              <Eye className="h-3 w-3" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => copyToClipboard(post.content, post.hashtags, post.platform)}
+                              className={cn("h-8 w-8 p-0 rounded-md", styles.button)}
+                            >
+                              <Copy className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="bg-slate-800/60 rounded-lg p-4 border border-slate-700/30 h-fit">
+                          <div className="space-y-3">
+                            <p className="text-slate-100 text-sm leading-relaxed whitespace-pre-wrap">{post.content}</p>
+                            {post.hashtags.length > 0 && (
+                              <div className="pt-2 border-t border-slate-700/30">
+                                <div className="flex flex-wrap gap-1.5">
+                                  {post.hashtags.map((hashtag, hashIndex) => (
+                                    <span
+                                      key={hashIndex}
+                                      className={cn("text-xs px-2 py-1 rounded-md font-medium", styles.accent)}
+                                    >
+                                      {hashtag}
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              )
-            })}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       )}
