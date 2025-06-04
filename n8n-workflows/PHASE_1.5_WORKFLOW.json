@@ -1,5 +1,5 @@
 {
-  "name": "OmniPost - June 3",
+  "name": "Phase 1.5 - Workflow",
   "nodes": [
     {
       "parameters": {
@@ -12,7 +12,7 @@
       "typeVersion": 2,
       "position": [
         -440,
-        200
+        300
       ],
       "id": "d8b43665-ca74-4399-b7c7-adf6198d97f4",
       "name": "Webhook",
@@ -44,7 +44,7 @@
       "typeVersion": 1.8,
       "position": [
         376,
-        200
+        100
       ],
       "id": "e57aced2-a77a-4fe7-b75a-8e48380933d2",
       "name": "OpenAI - Twitter",
@@ -82,7 +82,7 @@
       "typeVersion": 1.8,
       "position": [
         376,
-        0
+        -100
       ],
       "id": "3483b7b2-3953-445a-af62-bd7938f095ce",
       "name": "OpenAI - Linkedin",
@@ -111,7 +111,7 @@
       "typeVersion": 3.4,
       "position": [
         -220,
-        200
+        300
       ],
       "id": "478d5b5c-144c-4082-822b-07ff42510bfb",
       "name": "Prepare Input",
@@ -119,55 +119,9 @@
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "6b542c6d-93cf-4879-a8ba-7d29a4f7fbc1",
-              "name": "twitterPost",
-              "value": "={{ $json.choices[0].message.content }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        752,
-        200
-      ],
-      "id": "3f7c463f-744c-4586-a7a1-46cdaac0f673",
-      "name": "Format Twitter"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "6b542c6d-93cf-4879-a8ba-7d29a4f7fbc1",
-              "name": "linkedinPost",
-              "value": "={{ $json.choices[0].message.content }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        752,
-        0
-      ],
-      "id": "ab5d90c7-33c5-4e9f-83eb-e31cc6813a49",
-      "name": "Format Linkedin"
-    },
-    {
-      "parameters": {
         "mode": "combine",
         "combineBy": "combineByPosition",
-        "numberInputs": 3,
+        "numberInputs": 5,
         "options": {
           "includeUnpaired": true
         }
@@ -176,7 +130,7 @@
       "typeVersion": 3.2,
       "position": [
         972,
-        200
+        258
       ],
       "id": "18ab1c14-0e68-4bab-9f29-c19331c2d6f2",
       "name": "Merge Posts"
@@ -207,7 +161,7 @@
       "typeVersion": 1.8,
       "position": [
         376,
-        400
+        300
       ],
       "id": "e5dc7c18-ada7-43ce-98f9-b9dd036e17b6",
       "name": "OpenAI - Threads",
@@ -220,29 +174,6 @@
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "6b542c6d-93cf-4879-a8ba-7d29a4f7fbc1",
-              "name": "threadsPost",
-              "value": "={{ $json.choices[0].message.content }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        752,
-        400
-      ],
-      "id": "e74e865d-c0ed-4c79-af91-e9c5cbf083ee",
-      "name": "Format Threads"
-    },
-    {
-      "parameters": {
         "respondWith": "json",
         "responseBody": "={{ $json }}",
         "options": {}
@@ -251,7 +182,7 @@
       "typeVersion": 1.3,
       "position": [
         1412,
-        200
+        300
       ],
       "id": "89255f0f-27bf-42ae-9f01-442591f45899",
       "name": "Respond to Webhook"
@@ -274,7 +205,7 @@
       "typeVersion": 3.4,
       "position": [
         1192,
-        200
+        300
       ],
       "id": "7530c043-a484-48a9-934e-3df2e12da4bc",
       "name": "Format Output"
@@ -306,7 +237,7 @@
       "typeVersion": 1.8,
       "position": [
         0,
-        200
+        300
       ],
       "id": "2191bc57-2de5-436e-bfdf-a6174c07e126",
       "name": "Content Analyzer",
@@ -316,6 +247,195 @@
           "name": "OpenAi account"
         }
       }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=`You are an expert content strategist specializing in creating compelling newsletter-style articles for platforms like Substack. Your goal is to transform or repurpose existing long-form content into engaging pieces that resonate with a dedicated subscriber base. Focus on clear narrative structure, insightful commentary, personal voice (if appropriate for the content), and encouraging reader engagement or discussion. Your output should be a well-formatted article segment.`",
+              "role": "system"
+            },
+            {
+              "content": "=`Based on the following content analysis:\n{{ JSON.stringify($('Content Analyzer').item.json.choices[0].message.content) }}\n\nTransform the original content provided below into an engaging article segment suitable for a Substack newsletter. Consider the typical Substack format which often includes a personal introduction, developed points, and a concluding thought or call to discussion.\n\nORIGINAL CONTENT TO TRANSFORM:\n{{ $('Prepare Input').item.json.longFormContent }}\n\nREQUIREMENTS:\n- **Purpose/Angle:** Determine a compelling angle or purpose for this Substack piece based on the original content and the 'keyTopics' ('{{ $('Content Analyzer').item.json.choices[0].message.content.keyTopics ? $('Content Analyzer').item.json.choices[0].message.content.keyTopics.join(\", \") : \"identified topics\" }}'). This might be a summary, a deeper dive into one aspect, an opinion piece inspired by the content, or an engaging introduction to the full content.\n- **Structure & Formatting:**\n    - Create a clear, readable structure with paragraphs.\n    - Use markdown for formatting if appropriate (e.g., for headings like ## Section Title, bolding **text**, italics *text*, blockquotes > text, lists - item).\n    - Ensure good flow and logical progression of ideas.\n- **Tone & Voice:** Adapt your tone based on the 'mainTone' ('{{ $('Content Analyzer').item.json.choices[0].message.content.mainTone }}') and 'targetAudienceIntent' ('{{ $('Content Analyzer').item.json.choices[0].message.content.targetAudienceIntent }}'). If the 'mainTone' suggests a personal or opinionated style, lean into that, as it's common on Substack.\n- **Engagement:** If appropriate, include a question for readers or a prompt for discussion in the comments section.\n- **Length:** Aim for a substantial segment (e.g., 300-700 words) that provides value, but don't just repeat the original content verbatim. Focus on repurposing with a fresh perspective or summary.\n- **Complexity Adaptation:** If 'estimatedComplexity' ('{{ $('Content Analyzer').item.json.choices[0].message.content.estimatedComplexity }}') is 'expert_level', present insights thoughtfully. If it's 'beginner_friendly', ensure clarity and accessibility.\n- **Originality:** While based on the original content, the Substack piece should offer a unique take or summary, not just a copy-paste.\n\nOUTPUT FORMAT (Reminder):\nA well-formatted article segment using markdown for structure where appropriate, ready to be part of a Substack newsletter.`"
+            }
+          ]
+        },
+        "simplify": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        376,
+        500
+      ],
+      "id": "2dec0c47-eb60-4adb-9084-d3da0c0d5642",
+      "name": "OpenAI - Substack",
+      "credentials": {
+        "openAiApi": {
+          "id": "T1zGEMiMAgCMOgA5",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=`You are an expert writer and content strategist specializing in crafting engaging articles for Medium. Your goal is to transform or repurpose existing long-form content into well-structured, insightful, and shareable blog posts that appeal to a broad audience. Focus on strong headlines, clear introductions, well-developed points with supporting details, and impactful conclusions. Your output should be a high-quality article segment.`",
+              "role": "system"
+            },
+            {
+              "content": "=`Based on the following content analysis:\n{{ JSON.stringify($('Content Analyzer').item.json.choices[0].message.content) }}\n\nTransform the original content provided below into a compelling article segment suitable for publishing on Medium. Consider Medium's emphasis on quality writing, clear takeaways, and often a slightly more formal or in-depth approach than typical social media.\n\nORIGINAL CONTENT TO TRANSFORM:\n{{ $('Prepare Input').item.json.longFormContent }}\n\nREQUIREMENTS:\n- **Headline/Title Idea (Optional but Recommended):** Suggest 1-2 compelling headline ideas for this Medium article based on the content and 'keyTopics' ('{{ $('Content Analyzer').item.json.choices[0].message.content.keyTopics ? $('Content Analyzer').item.json.choices[0].message.content.keyTopics.join(\", \") : \"identified topics\" }}').\n- **Structure & Formatting:**\n    - Create a well-organized structure with a clear introduction, body paragraphs developing distinct points, and a conclusion.\n    - Use markdown for formatting (e.g., ## Main Title Idea, ### Subheading, **bold**, *italic*, blockquotes, lists).\n    - Ensure logical transitions between ideas.\n- **Tone & Style:** Adapt your tone based on the 'mainTone' ('{{ $('Content Analyzer').item.json.choices[0].message.content.mainTone }}') and 'targetAudienceIntent' ('{{ $('Content Analyzer').item.json.choices[0].message.content.targetAudienceIntent }}'). Medium often favors informative, thought-provoking, or story-driven content.\n- **Key Takeaways:** If possible, implicitly or explicitly highlight 2-3 key takeaways for the reader from the transformed content.\n- **Length:** Aim for a well-developed article segment (e.g., 400-800 words). Focus on providing depth or a clear narrative.\n- **Complexity Adaptation:** If 'estimatedComplexity' ('{{ $('Content Analyzer').item.json.choices[0].message.content.estimatedComplexity }}') is 'expert_level', break down complex ideas clearly. If it's 'beginner_friendly', maintain accessibility while providing value.\n- **Call to Action (Subtle):** Medium posts sometimes end with a thought-provoking statement, a question for reflection, or a subtle encouragement for claps/follows, but avoid overly salesy CTAs.\n\nOUTPUT FORMAT (Reminder):\nA well-written and formatted article segment, potentially including headline suggestions, using markdown for structure, suitable for Medium.`"
+            }
+          ]
+        },
+        "simplify": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        376,
+        700
+      ],
+      "id": "fc1bd7f7-2f8e-4a9b-85c7-1aa0eed8cec8",
+      "name": "OpenAI - Medium",
+      "credentials": {
+        "openAiApi": {
+          "id": "T1zGEMiMAgCMOgA5",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6b542c6d-93cf-4879-a8ba-7d29a4f7fbc1",
+              "name": "substackPost",
+              "value": "={{ $json.choices[0].message.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        752,
+        500
+      ],
+      "id": "d007154e-c78e-479d-9c53-493bc745384d",
+      "name": "Format - Substack"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6b542c6d-93cf-4879-a8ba-7d29a4f7fbc1",
+              "name": "threadsPost",
+              "value": "={{ $json.choices[0].message.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        752,
+        300
+      ],
+      "id": "e74e865d-c0ed-4c79-af91-e9c5cbf083ee",
+      "name": "Format - Threads"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6b542c6d-93cf-4879-a8ba-7d29a4f7fbc1",
+              "name": "twitterPost",
+              "value": "={{ $json.choices[0].message.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        752,
+        100
+      ],
+      "id": "3f7c463f-744c-4586-a7a1-46cdaac0f673",
+      "name": "Format - Twitter"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6b542c6d-93cf-4879-a8ba-7d29a4f7fbc1",
+              "name": "linkedinPost",
+              "value": "={{ $json.choices[0].message.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        752,
+        -100
+      ],
+      "id": "ab5d90c7-33c5-4e9f-83eb-e31cc6813a49",
+      "name": "Format - Linkedin"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6b542c6d-93cf-4879-a8ba-7d29a4f7fbc1",
+              "name": "mediumPost",
+              "value": "={{ $json.choices[0].message.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        752,
+        700
+      ],
+      "id": "e48a1907-2a6e-462f-b167-0bab400c4af3",
+      "name": "Format - Medium"
     }
   ],
   "pinData": {},
@@ -335,7 +455,7 @@
       "main": [
         [
           {
-            "node": "Format Twitter",
+            "node": "Format - Twitter",
             "type": "main",
             "index": 0
           }
@@ -346,7 +466,7 @@
       "main": [
         [
           {
-            "node": "Format Linkedin",
+            "node": "Format - Linkedin",
             "type": "main",
             "index": 0
           }
@@ -358,28 +478,6 @@
         [
           {
             "node": "Content Analyzer",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Format Twitter": {
-      "main": [
-        [
-          {
-            "node": "Merge Posts",
-            "type": "main",
-            "index": 1
-          }
-        ]
-      ]
-    },
-    "Format Linkedin": {
-      "main": [
-        [
-          {
-            "node": "Merge Posts",
             "type": "main",
             "index": 0
           }
@@ -401,20 +499,9 @@
       "main": [
         [
           {
-            "node": "Format Threads",
+            "node": "Format - Threads",
             "type": "main",
             "index": 0
-          }
-        ]
-      ]
-    },
-    "Format Threads": {
-      "main": [
-        [
-          {
-            "node": "Merge Posts",
-            "type": "main",
-            "index": 2
           }
         ]
       ]
@@ -447,6 +534,93 @@
             "node": "OpenAI - Threads",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "OpenAI - Substack",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "OpenAI - Medium",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI - Medium": {
+      "main": [
+        [
+          {
+            "node": "Format - Medium",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI - Substack": {
+      "main": [
+        [
+          {
+            "node": "Format - Substack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format - Threads": {
+      "main": [
+        [
+          {
+            "node": "Merge Posts",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Format - Twitter": {
+      "main": [
+        [
+          {
+            "node": "Merge Posts",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Format - Linkedin": {
+      "main": [
+        [
+          {
+            "node": "Merge Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format - Substack": {
+      "main": [
+        [
+          {
+            "node": "Merge Posts",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Format - Medium": {
+      "main": [
+        [
+          {
+            "node": "Merge Posts",
+            "type": "main",
+            "index": 4
           }
         ]
       ]
@@ -458,7 +632,7 @@
     "timezone": "America/Vancouver",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "21081015-42bb-489e-9bba-07c98fa0c0b7",
+  "versionId": "9fa7e433-9f3f-428f-a079-3e141a37c47f",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "ae0aee2e42c05965c8da048fc8e2eac1fe7283d21ad18b5b3ce702df4f24811f"
