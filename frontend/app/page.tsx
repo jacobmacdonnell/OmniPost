@@ -32,7 +32,7 @@ import { useState } from "react"
 // Pricing plans data
 const pricingPlans = [
   {
-    name: "Free",
+    name: "Starter",
     description: "Perfect for trying out OmniPost.ai",
     monthlyPrice: "0",
     yearlyPrice: "0",
@@ -44,14 +44,14 @@ const pricingPlans = [
   },
   {
     name: "Pro",
-    description: "Ideal for content creators",
-    monthlyPrice: "29",
-    yearlyPrice: "23",
-    yearlySavings: "72",
+    description: "Ideal for most content creators",
+    monthlyPrice: "20",
+    yearlyPrice: "16",
+    yearlySavings: "48",
     period: "/month",
     features: [
       "50 transformations/month",
-      "3 platforms",
+      "All major platforms",
       "Advanced analytics",
       "Priority support",
       "Custom hashtags",
@@ -62,14 +62,14 @@ const pricingPlans = [
   },
   {
     name: "Max",
-    description: "For teams and agencies",
-    monthlyPrice: "99",
-    yearlyPrice: "79",
-    yearlySavings: "240",
+    description: "For maximum content creation",
+    monthlyPrice: "30",
+    yearlyPrice: "24",
+    yearlySavings: "72",
     period: "/month",
     features: [
-      "Unlimited transformations",
-      "All platforms",
+      "100 transformations/month",
+      "All major platforms",
       "Team collaboration",
       "White-label options",
       "API access",
@@ -530,9 +530,8 @@ export default function LandingPage() {
           {/* Pricing Cards with Equal Heights */}
           <div className="grid md:grid-cols-3 gap-6">
             {pricingPlans.map((plan, index) => {
-              const price = billingPeriod === "monthly" ? plan.monthlyPrice : plan.yearlyPrice
-
-                return (
+              let displayPrice = (plan.name === "Starter") ? "Free" : `$${billingPeriod === "monthly" ? plan.monthlyPrice : plan.yearlyPrice}`;
+              return (
                 <div key={index} className="flex">
                   <Card
                     className={`w-full flex flex-col bg-slate-800/90 backdrop-blur-sm ${
@@ -554,22 +553,16 @@ export default function LandingPage() {
                       {/* Header Section */}
                       <div className="text-center mb-4 pt-0">
                         <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
-                        <p className="text-slate-400 text-sm mb-3">{plan.description}</p>
                         <div className="mb-4 h-[72px]">
-                          <span className="text-3xl font-bold text-white">${price}</span>
-                          <span className="text-slate-400 text-sm ml-1">
-                            {plan.period === "forever" 
-                              ? "forever"
-                              : billingPeriod === "yearly"
-                                ? "/month billed yearly"
-                                : "/month"}
-                          </span>
-                          {billingPeriod === "yearly" && plan.yearlySavings !== "0" && (
+                          <span className="text-4xl font-semibold text-white">{displayPrice}</span>
+                          {plan.name !== "Starter" && <span className="text-slate-400 text-sm ml-1">/month</span>}
+                          {billingPeriod === "yearly" && plan.yearlySavings !== "0" && plan.name !== "Starter" && (
                             <div className="text-green-400 text-sm font-medium mt-2">
                               Save ${plan.yearlySavings}/year
                             </div>
                           )}
                         </div>
+                        <p className="text-slate-100 text-lg mb-3">{plan.description}</p>
                       </div>
 
                       {/* Features Section - Flex Grow */}
@@ -578,7 +571,7 @@ export default function LandingPage() {
                           {plan.features.map((feature, i) => (
                             <li key={i} className="flex items-center space-x-2">
                               <Check className="h-4 w-4 text-green-400 shrink-0" />
-                              <span className="text-slate-300 text-sm">{feature}</span>
+                              <span className="text-slate-100 text-sm">{feature}</span>
                             </li>
                           ))}
                         </ul>
@@ -599,12 +592,12 @@ export default function LandingPage() {
                     </CardContent>
                   </Card>
                 </div>
-                )
-              })}
-            </div>
+              )
+            })}
+          </div>
 
-          {/* Enterprise CTA */}
-          <Card className="mt-10 bg-slate-800/90 border-slate-700/70 backdrop-blur-sm shadow-lg">
+          {/* Enterprise CTA - Temporarily Disabled */}
+          {/* <Card className="mt-10 bg-slate-800/90 border-slate-700/70 backdrop-blur-sm shadow-lg">
             <CardContent className="p-8 text-center">
               <h3 className="text-lg font-bold text-white mb-2">Enterprise Solutions</h3>
               <p className="text-slate-400 text-sm mb-6 max-w-xl mx-auto">
@@ -614,7 +607,7 @@ export default function LandingPage() {
                 Contact Enterprise Sales
               </Button>
             </CardContent>
-          </Card>
+          </Card> */}
         </div>
       </section>
 
