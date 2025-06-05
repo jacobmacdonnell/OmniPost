@@ -157,27 +157,7 @@ Here is the **complete, fully detailed OmniPost.ai: Phase 1.5 Enhancement Plan**
         *   ✅ `Format Output` node correctly structures the final JSON including `substackPost` and `mediumPost` (e.g., using `output: {{ $json }}` if Merge Posts combines correctly into a single object).
     *   ✅ **H. Test Contextual Adaptation with "Blue Whales" Sample:**
         *   ✅ LinkedIn, Twitter, and Threads outputs demonstrate high-quality, platform-specific adaptation.
-        *   [ ] Test Substack and Medium outputs for "Blue Whales" to ensure they also adapt well and produce good quality article segments.
-    *   [ ] **I. Test with diverse content samples (2-3 more significantly different types of content for ALL 5 platforms).**
-        *   Verify `Content Analyzer` provides appropriate, distinct analyses.
-        *   Verify contextual adaptation continues to work effectively and with high quality for LinkedIn, Twitter, Threads, Substack, and Medium for these new content types.
-    *   [ ] **J. Verify contextual adaptation works robustly across varied inputs for ALL 5 platforms.** (Mark this once diverse content testing is satisfactory).
-
-#### **1.3 Workflow Testing & Validation**
-
-*   [ ] **1.3.1 Comprehensive Testing Suite (Now for 5 platforms)**
-    *   [ ] Test with blog post content (500+ words) - *Partially covered by "Blue Whales," needs more examples during diverse content testing.*
-    *   [ ] Test with short announcement (100 words)
-    *   [ ] Test with technical documentation snippet
-    *   [ ] Test with marketing copy
-    *   [ ] Test with case study content
-    *   [ ] Document quality improvements vs baseline (original MVP prompts)
-*   [ ] **1.3.2 Edge Case Handling (Now for 5 platforms)**
-    *   [ ] Test with very long content (2000+ words)
-    *   [ ] Test with very short content (50 words / under 20 words)
-    *   [ ] Test with non-English content (if applicable/desired)
-    *   [ ] Add error handling in n8n for failed AI responses (review and implement; e.g., "Error Workflow Node" or "Continue on Fail" settings on nodes).
-    *   [ ] Implement content length warnings (consider for frontend or n8n logic for user feedback).
+        *   ✅ Test Substack and Medium outputs for "Blue Whales" to ensure they also adapt well and produce good quality article segments.
 
 ---
 
@@ -427,40 +407,7 @@ Here is the **complete, fully detailed OmniPost.ai: Phase 1.5 Enhancement Plan**
 
 ---
 
-### **Stage 6: Testing & Validation (Week 3-4)**
-
-#### **6.1 Comprehensive Testing Suite**
-*   [ ] **6.1.1 Content Quality Testing**
-    *   [ ] Test with 20+ diverse content samples across all 5 platforms.
-    *   [ ] Validate AI response quality, relevance, and adherence to platform nuances and user settings.
-    *   [ ] Measure improvement over baseline MVP (subjective and objective if possible).
-    *   [ ] Document quality metrics (e.g., scores from 4.1.1).
-*   [ ] **6.1.2 User Experience Testing**
-    *   [ ] Complete end-to-end user journey testing.
-    *   [ ] Test on various mobile devices and screen sizes.
-    *   [ ] Test on major browsers (Chrome, Firefox, Safari, Edge).
-    *   [ ] Basic performance testing under simulated load (e.g., multiple rapid generations).
-*   [ ] **6.1.3 Edge Case Testing**
-    *   [ ] Re-test edge cases from 1.3.2 with the full UI and features.
-    *   [ ] Test with empty inputs, extremely long inputs, special characters.
-    *   [ ] Test interactions between user customization settings.
-
-#### **6.2 Beta Testing Preparation**
-*   [ ] **6.2.1 Beta Environment Setup**
-    *   [ ] Deploy to a staging environment (e.g., Vercel, Netlify).
-    *   [ ] Set up error tracking (e.g., Sentry, LogRocket).
-    *   [ ] Implement basic analytics (e.g., Vercel Analytics, Plausible, or GA4 for feature usage).
-    *   [ ] Create a feedback collection system (e.g., Tally.so form, Canny, dedicated email).
-*   [ ] **6.2.2 Beta Testing Materials**
-    *   [ ] Create a user testing script with specific tasks and questions.
-    *   [ ] Prepare a diverse sample content library for beta testers.
-    *   [ ] Design feedback collection forms/surveys.
-    *   [ ] Define clear success metrics and KPIs for the beta phase.
-
----
-
-## **📊 Phase 1.5 Success Metrics**
-*(To be evaluated as stages complete)*
+## 📊 Phase 1.5 Success Metrics
 
 ### **Quality Metrics:**
 *   [ ] 90%+ of generated content clearly relates to input (Assess during Stage 1.2.2I/J & 1.3, 6.1)
@@ -485,7 +432,7 @@ Here is the **complete, fully detailed OmniPost.ai: Phase 1.5 Enhancement Plan**
 
 ---
 
-## **🎯 Phase 1.5 Timeline Summary**
+## 🎯 Phase 1.5 Timeline Summary
 
 **Week 1:** Core AI overhaul + Basic frontend enhancements
     *   ✅ **Core AI overhaul (n8n workflow for 5 platforms) is configured with high-quality prompts.** Next: Robustness testing of Stage 1.
@@ -501,4 +448,67 @@ Here is the **complete, fully detailed OmniPost.ai: Phase 1.5 Enhancement Plan**
 
 ---
 
-This should be the complete and detailed plan you need. All previous configurations and your current progress are reflected.
+# Testing & Validation (moved from earlier in the plan)
+
+### Stage 6: Testing & Validation (Week 3-4)
+
+#### 6.1 Comprehensive Testing Suite
+*   [ ] **6.1.1 Content Quality Testing**
+    *   [ ] Test with 20+ diverse content samples across all 5 platforms.
+    *   [ ] Validate AI response quality, relevance, and adherence to platform nuances and user settings.
+    *   [ ] Measure improvement over baseline MVP (subjective and objective if possible).
+    *   [ ] Document quality metrics (e.g., scores from 4.1.1).
+*   [ ] **6.1.2 User Experience Testing**
+    *   [ ] Complete end-to-end user journey testing.
+    *   [ ] Test on various mobile devices and screen sizes.
+    *   [ ] Test on major browsers (Chrome, Firefox, Safari, Edge).
+    *   [ ] Basic performance testing under simulated load (e.g., multiple rapid generations).
+*   [ ] **6.1.3 Edge Case Testing**
+    *   [ ] Re-test edge cases from 1.3.2 with the full UI and features.
+    *   [ ] Test with empty inputs, extremely long inputs, special characters.
+    *   [ ] Test interactions between user customization settings.
+
+#### 6.2 Beta Testing Preparation
+*   [ ] **6.2.1 Beta Environment Setup**
+    *   [ ] Deploy to a staging environment (e.g., Vercel, Netlify).
+    *   [ ] Set up error tracking (e.g., Sentry, LogRocket).
+    *   [ ] Implement basic analytics (e.g., Vercel Analytics, Plausible, or GA4 for feature usage).
+    *   [ ] Create a feedback collection system (e.g., Tally.so form, Canny, dedicated email).
+*   [ ] **6.2.2 Beta Testing Materials**
+    *   [ ] Create a user testing script with specific tasks and questions.
+    *   [ ] Prepare a diverse sample content library for beta testers.
+    *   [ ] Design feedback collection forms/surveys.
+    *   [ ] Define clear success metrics and KPIs for the beta phase.
+
+---
+
+### Additional Testing & Validation (moved from earlier in the plan)
+
+*   ✅ **H. Test Contextual Adaptation with "Blue Whales" Sample:**
+    *   ✅ LinkedIn, Twitter, and Threads outputs demonstrate high-quality, platform-specific adaptation.
+    *   [ ] Test Substack and Medium outputs for "Blue Whales" to ensure they also adapt well and produce good quality article segments.
+*   [ ] **I. Test with diverse content samples (2-3 more significantly different types of content for ALL 5 platforms).**
+    *   Verify `Content Analyzer` provides appropriate, distinct analyses.
+    *   Verify contextual adaptation continues to work effectively and with high quality for LinkedIn, Twitter, Threads, Substack, and Medium for these new content types.
+*   [ ] **J. Verify contextual adaptation works robustly across varied inputs for ALL 5 platforms.** (Mark this once diverse content testing is satisfactory).
+
+#### 1.3 Workflow Testing & Validation
+
+*   [ ] **1.3.1 Comprehensive Testing Suite (Now for 5 platforms)**
+    *   [ ] Test with blog post content (500+ words) - *Partially covered by "Blue Whales," needs more examples during diverse content testing.*
+    *   [ ] Test with short announcement (100 words)
+    *   [ ] Test with technical documentation snippet
+    *   [ ] Test with marketing copy
+    *   [ ] Test with case study content
+    *   [ ] Document quality improvements vs baseline (original MVP prompts)
+*   [ ] **1.3.2 Edge Case Handling (Now for 5 platforms)**
+    *   [ ] Test with very long content (2000+ words)
+    *   [ ] Test with very short content (50 words / under 20 words)
+    *   [ ] Test with non-English content (if applicable/desired)
+    *   [ ] Add error handling in n8n for failed AI responses (review and implement; e.g., "Error Workflow Node" or "Continue on Fail" settings on nodes).
+    *   [ ] Implement content length warnings (consider for frontend or n8n logic for user feedback).
+    
+       [ ] **I. Test with diverse content samples (2-3 more significantly different types of content for ALL 5 platforms).**
+        *   Verify `Content Analyzer` provides appropriate, distinct analyses.
+        *   Verify contextual adaptation continues to work effectively and with high quality for LinkedIn, Twitter, Threads, Substack, and Medium for these new content types.
+    *   [ ] **J. Verify contextual adaptation works robustly across varied inputs for ALL 5 platforms.** (Mark this once diverse content testing is satisfactory).
