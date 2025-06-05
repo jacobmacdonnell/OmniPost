@@ -34,5 +34,5 @@ The system successfully transforms long-form content into platform-specific soci
 
 ---
 
-*Archived on: December 2024*  
+*Archived on: June 2025*  
 *MVP Completion: 100% functional end-to-end system* 
