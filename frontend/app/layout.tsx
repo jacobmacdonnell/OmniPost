@@ -1,20 +1,21 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { SessionContextProvider } from '@supabase/auth-helpers-react';
+import { supabase } from '@/lib/supabaseClient';
 
 export const metadata: Metadata = {
-  title: 'OmniPost.ai',
-  description: 'OmniPost.ai is a platform that allows you to generate posts for multiple platforms at once.',
-  generator: 'OmniPost.ai',
-}
+  title: 'OmniPost',
+  description: 'AI-powered content generator',
+};
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <SessionContextProvider supabaseClient={supabase}>
+          {children}
+        </SessionContextProvider>
+      </body>
     </html>
-  )
+  );
 }
