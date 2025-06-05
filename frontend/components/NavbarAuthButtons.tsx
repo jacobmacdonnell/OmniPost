@@ -1,22 +1,30 @@
 "use client";
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import type { User } from "@supabase/supabase-js";
 
 export function NavbarAuthButtons() {
+  const supabase = createClient();
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    const fetchUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      setUser(data.user);
+    };
+
+    fetchUser();
+
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
+
     return () => {
       listener?.subscription.unsubscribe();
     };
-  }, []);
+  }, [supabase]);
 
   if (user) {
     return (
