@@ -212,12 +212,16 @@ export default function LandingPage() {
 
             {/* Desktop CTA */}
             <div className="hidden md:flex items-center space-x-3">
-              <Button className="border-slate-700 bg-slate-800 text-white hover:bg-slate-700 hover:text-white hover:border-slate-500 px-4 py-2">
-                Log In
-              </Button>
-              <Button className="text-sm bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-4 py-2">
-                Get Started
-              </Button>
+              <Link href="/login">
+                <Button className="border-slate-700 bg-slate-800 text-white hover:bg-slate-700 hover:text-white hover:border-slate-500 px-4 py-2">
+                  Log In
+                </Button>
+              </Link>
+              <Link href="/login">
+                <Button className="text-sm bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-4 py-2">
+                  Get Started
+                </Button>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
@@ -247,12 +251,16 @@ export default function LandingPage() {
                   Testimonials
                 </a>
                 <div className="px-4 pt-3 border-t border-slate-800">
-                  <Button variant="ghost" className="w-full mb-2 text-sm text-slate-300 hover:text-white">
-                    Log In
-                  </Button>
-                  <Button className="w-full text-sm bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
-                    Get Started
-                  </Button>
+                  <Link href="/login">
+                    <Button variant="ghost" className="w-full mb-2 text-sm text-slate-300 hover:text-white">
+                      Log In
+                    </Button>
+                  </Link>
+                  <Link href="/login">
+                    <Button className="w-full text-sm bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
+                      Get Started
+                    </Button>
+                  </Link>
                 </div>
               </nav>
             </div>
@@ -275,7 +283,7 @@ export default function LandingPage() {
                 Transform Content Into{" "}
                 <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                   Social Posts
-            </span>
+                </span>
               </h1>
 
               <p className="text-lg text-slate-400 leading-relaxed mb-6 max-w-xl mx-auto lg:mx-0">
@@ -285,7 +293,7 @@ export default function LandingPage() {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-8">
-                <Link href="/dashboard" className="w-full sm:w-auto">
+                <Link href="/login" className="w-full sm:w-auto">
                   <Button className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2.5">
                     Try For Free
                     <ArrowRight className="ml-2 h-4 w-4" />
@@ -293,9 +301,9 @@ export default function LandingPage() {
                 </Link>
                 <div className="w-full sm:w-auto">
                   <Button className="w-full sm:w-auto bg-slate-800 text-white hover:bg-slate-700 hover:text-white px-6 py-2.5">
-                  Watch Demo
+                    Watch Demo
                     <Play className="ml-2 h-4 w-4" />
-                </Button>
+                  </Button>
                 </div>
               </div>
 
@@ -475,7 +483,7 @@ export default function LandingPage() {
           </div>
 
           <div className="text-center mt-8">
-            <Link href="/dashboard">
+            <Link href="/login">
               <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2.5">
                 Try It Now
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -585,15 +593,17 @@ export default function LandingPage() {
 
                       {/* CTA Button - Always at Bottom */}
                       <div className="mt-auto">
-                        <Button
-                          className={`w-full py-5 ${
-                            plan.popular
-                              ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white shadow-md shadow-blue-500/20 hover:shadow-blue-500/30"
-                              : "bg-slate-700 hover:bg-slate-600 text-white"
-                          } transition-all duration-300`}
-                        >
-                          {plan.cta}
-                        </Button>
+                        <Link href="/login">
+                          <Button
+                            className={`w-full py-5 ${
+                              plan.popular
+                                ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white shadow-md shadow-blue-500/20 hover:shadow-blue-500/30"
+                                : "bg-slate-700 hover:bg-slate-600 text-white"
+                            } transition-all duration-300`}
+                          >
+                            {plan.cta}
+                          </Button>
+                        </Link>
                       </div>
                     </CardContent>
                   </Card>
@@ -725,7 +735,7 @@ export default function LandingPage() {
             Join thousands of content creators who are saving time and increasing engagement with OmniPost.ai.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/dashboard">
+            <Link href="/login">
               <Button className="bg-slate-800 text-white hover:bg-slate-700 hover:text-white px-6 py-2.5">
                 Try For Free
                 <ArrowRight className="ml-2 h-4 w-4" />
