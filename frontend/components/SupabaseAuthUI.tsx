@@ -8,6 +8,7 @@ export default function SupabaseAuthUI() {
       supabaseClient={supabase}
       appearance={{ theme: ThemeSupa }}
       providers={['google']}
+      onlyThirdPartyProviders
     />
   );
-} 
+}

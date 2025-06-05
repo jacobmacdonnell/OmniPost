@@ -3,8 +3,7 @@
 import Image from 'next/image';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button';
-import { GoogleLoginButton } from '@/components/GoogleLoginButton';
+import SupabaseAuthUI from '@/components/SupabaseAuthUI';
 
 export default function LoginPage() {
   return (
@@ -18,7 +17,7 @@ export default function LoginPage() {
           <p className="text-center text-muted-foreground text-sm">
             One account. All your content. Start your free trial instantly with Google.
           </p>
-          <GoogleLoginButton />
+          <SupabaseAuthUI />
           <Separator />
           <p className="text-xs text-center text-muted-foreground">
             By signing in, you agree to our Terms of Service and Privacy Policy.
