@@ -4,11 +4,11 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { NavbarAuthButtons } from "@/components/NavbarAuthButtons"
 import {
   Sparkles,
   ArrowRight,
   Check,
-  Twitter,
   Linkedin,
   MessageCircle,
   Clock,
@@ -212,16 +212,7 @@ export default function LandingPage() {
 
             {/* Desktop CTA */}
             <div className="hidden md:flex items-center space-x-3">
-              <Link href="/login">
-                <Button className="border-slate-700 bg-slate-800 text-white hover:bg-slate-700 hover:text-white hover:border-slate-500 px-4 py-2">
-                  Log In
-                </Button>
-              </Link>
-              <Link href="/login">
-                <Button className="text-sm bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-4 py-2">
-                  Get Started
-                </Button>
-              </Link>
+              <NavbarAuthButtons />
             </div>
 
             {/* Mobile Menu Button */}
@@ -251,16 +242,7 @@ export default function LandingPage() {
                   Testimonials
                 </a>
                 <div className="px-4 pt-3 border-t border-slate-800">
-                  <Link href="/login">
-                    <Button variant="ghost" className="w-full mb-2 text-sm text-slate-300 hover:text-white">
-                      Log In
-                    </Button>
-                  </Link>
-                  <Link href="/login">
-                    <Button className="w-full text-sm bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
-                      Get Started
-                    </Button>
-                  </Link>
+                  <NavbarAuthButtons />
                 </div>
               </nav>
             </div>
@@ -345,7 +327,7 @@ export default function LandingPage() {
                 <div className="p-4 space-y-3">
                   <div className="bg-slate-800 rounded-lg p-3 border border-slate-700">
                     <div className="flex items-center space-x-2 mb-2">
-                      <Twitter className="h-4 w-4 text-blue-400" />
+                      <X className="h-4 w-4 text-blue-400" />
                       <span className="text-xs font-medium text-blue-400">Twitter</span>
                     </div>
                     <p className="text-xs text-slate-300 leading-relaxed">
@@ -762,7 +744,7 @@ export default function LandingPage() {
               </p>
               <div className="flex items-center space-x-3">
                 <a href="#" className="text-slate-400 hover:text-white transition-colors" aria-label="Twitter">
-                  <Twitter className="h-5 w-5" />
+                  <X className="h-5 w-5" />
                 </a>
                 <a href="#" className="text-slate-400 hover:text-white transition-colors" aria-label="LinkedIn">
                   <Linkedin className="h-5 w-5" />

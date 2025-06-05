@@ -9,6 +9,7 @@ export default function SupabaseAuthUI() {
       appearance={{ theme: ThemeSupa }}
       providers={['google']}
       onlyThirdPartyProviders
+      redirectTo={typeof window !== 'undefined' ? window.location.origin + '/dashboard' : '/dashboard'}
     />
   );
 }
