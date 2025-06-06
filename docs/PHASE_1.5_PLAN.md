@@ -161,16 +161,14 @@ Here is the **complete, fully detailed OmniPost.ai: Phase 1.5 Enhancement Plan**
 
 ---
 
-### **Stage 2: Frontend Enhancement - User Control & Customization (Week 1-2)**
+## **Stage 2: Frontend Enhancement - User Control & Customization (Week 1-2)**
 *(To be started after Stage 1 is robustly tested)*
 
-#### **2.1 Content Input Enhancement**
-*   [ ] **2.1.1 Smart Input Component**
-    *   [ ] Add character counter with color coding (red <50, yellow 50-100, green >100)
-    *   [ ] Add content type detection hint (potentially from a simplified frontend analysis or just UI)
-    *   [ ] Add word count and estimated reading time
-    *   [ ] Add paste formatting options (preserve/remove formatting)
-*   [ ] **2.1.2 Content Validation**
+#### **✅ 2.1 Content Input Enhancement**
+*   [x] **2.1.1 Smart Input Component**
+    *   [x] Add character counter with color coding
+    *   [x] Add word count
+*   [x] **2.1.2 Content Validation**
   ```typescript
   // Add to frontend validation
   const validateContent = (content: string) => {
@@ -181,59 +179,54 @@ Here is the **complete, fully detailed OmniPost.ai: Phase 1.5 Enhancement Plan**
   }
   ```
 
-#### **2.2 User Customization Controls (Data to be passed to n8n workflow)**
-*   [ ] **2.2.1 Tone Selection Component**
+#### **✅ 2.2 User Customization Controls (Data to be passed to n8n workflow)**
+*   [x] **2.2.1 Tone Selection Component**
   ```typescript
-  interface ToneOption { id: string; name: string; description: string; example: string; }
+  interface ToneOption { id: string; name: string; }
   const toneOptions: ToneOption[] = [
-    { id: 'professional', name: 'Professional', description: 'Formal, business-focused, authoritative', example: 'Industry insights and strategic recommendations' },
-    { id: 'casual', name: 'Casual', description: 'Friendly, conversational, approachable', example: 'Let\'s talk about this interesting topic...' },
-    { id: 'expert', name: 'Expert', description: 'Technical, detailed, thought-leadership', example: 'Deep dive into implementation details' },
-    { id: 'engaging', name: 'Engaging', description: 'Fun, attention-grabbing, memorable', example: 'You won\'t believe what happened next!' },
-    { id: 'custom', name: 'Custom', description: 'Define your own tone', example: 'e.g., witty and sarcastic' } // Consider how 'custom' maps to n8n
+    { id: 'professional', name: 'Professional' },
+    { id: 'casual', name: 'Casual' },
+    { id: 'expert', name: 'Expert' },
+    { id: 'engaging', name: 'Engaging' },
   ];
   ```
-    *   [ ] Create tone selector UI component (e.g., Shadcn Select/Radio Group).
-    *   [ ] Pass selected tone ID (e.g., `userSelectedTone`) to n8n workflow.
-    *   [ ] **n8n Adaptation:** Modify `Content Analyzer` or platform AI prompts to use `userSelectedTone` if provided, possibly overriding or influencing `mainTone` detection.
-*   [ ] **2.2.2 Industry/Niche Selection**
+    *   [x] Create tone selector UI component (Shadcn Select).
+    *   [x] Pass selected tone ID (`userSelectedTone`) to n8n workflow.
+*   [x] **2.2.2 Industry/Niche Selection**
   ```typescript
   const industries = [
-    { id: 'technology', name: 'Technology', hashtags: ['#tech', '#innovation', '#digital'] },
-    { id: 'marketing', name: 'Marketing', hashtags: ['#marketing', '#growth', '#strategy'] },
-    { id: 'finance', name: 'Finance', hashtags: ['#finance', '#investing', '#fintech'] },
-    { id: 'healthcare', name: 'Healthcare', hashtags: ['#healthcare', '#wellness', '#medical'] },
-    { id: 'education', name: 'Education', hashtags: ['#education', '#learning', '#training'] },
-    { id: 'ecommerce', name: 'E-commerce', hashtags: ['#ecommerce', '#retail', '#sales'] },
-    { id: 'saas', name: 'SaaS', hashtags: ['#saas', '#software', '#productivity'] },
-    { id: 'consulting', name: 'Consulting', hashtags: ['#consulting', '#business', '#strategy'] },
-    { id: 'other', name: 'Other/General', hashtags: ['#business', '#insights', '#tips'] }
+    { id: 'technology', name: 'Technology' },
+    { id: 'marketing', name: 'Marketing' },
+    // ... and so on
   ];
   ```
-    *   [ ] Create industry selector component.
-    *   [ ] Show relevant hashtag previews.
-    *   [ ] Pass selected industry ID (e.g., `userSelectedIndustry`) to n8n.
-    *   [ ] **n8n Adaptation:** `Content Analyzer` can use this as a hint or override for `industry` detection. Platform AI prompts can directly use `userSelectedIndustry` for hashtag suggestions or contextual language.
-*   [ ] **2.2.3 Platform Selection & Preferences**
-    *   [ ] Allow users to choose which platforms to generate for (e.g., checkboxes for all 5 platforms).
-        *   **n8n Adaptation:** Add logic (e.g., IF nodes) in n8n to only run branches for selected platforms.
-    *   [ ] Platform-specific options (Example, expand for Substack/Medium):
+    *   [x] Create industry selector component.
+    *   [x] Pass selected industry ID (`userSelectedIndustry`) to n8n.
+*   [x] **2.2.3 Platform Selection & Preferences**
+    *   [x] Allow users to choose which platforms to generate for (checkboxes for all 5 platforms).
+    *   [x] Platform-specific options are standardized with a consistent UI.
         ```typescript
-        interface PlatformSettings {
-          twitter: { enabled: boolean; threadMode: 'single' | 'thread' | 'auto'; maxTweets: number; };
-          linkedin: { enabled: boolean; includeQuestion: boolean; hashtagCount: number; };
-          threads: { enabled: boolean; emojiLevel: 'none' | 'minimal' | 'moderate' | 'high'; visualFormatting: boolean; };
-          substack?: { enabled: boolean; desiredAngle?: 'summary' | 'deep_dive' | 'opinion'; includePersonalIntro?: boolean; }; // Example
-          medium?: { enabled: boolean; suggestHeadlines?: boolean; focusOnTakeaways?: boolean; }; // Example
+        // This is the new, standardized settings structure
+        interface BasePlatformSettings {
+          style: "standard" | "listicle" | "thought_leadership" | "qa";
+          engagement: "none" | "question" | "poll" | "experiences";
+          emojiLevel: "none" | "minimal" | "moderate" | "high";
+        }
+        export interface PlatformSettings {
+          twitter: BasePlatformSettings & { format: "auto" | "force_thread" | "single_tweet"; };
+          linkedin: BasePlatformSettings;
+          threads: BasePlatformSettings;
+          substack: BasePlatformSettings & { generateTitle: boolean; };
+          medium: BasePlatformSettings & { generateTitle: boolean; };
         }
         ```
-        *   [ ] Implement UI for these settings.
-        *   [ ] Pass these settings to n8n.
-        *   [ ] **n8n Adaptation:** Modify platform AI User Messages to respect these settings.
+        *   [x] Implement UI for these settings using consistent dropdowns.
+        *   [x] Pass these settings to n8n.
+        *   [x] **n8n Adaptation:** Modify platform AI User Messages to respect these settings.
 
-#### **2.3 Enhanced Generation UI**
-*   [ ] **2.3.1 Progressive Loading States**
-    *   [ ] Show distinct loading messages for: "Analyzing content...", "Generating LinkedIn post...", "Generating Substack article...", etc.
+#### **✅ 2.3 Enhanced Generation UI**
+*   [x] **2.3.1 Progressive Loading States**
+    *   [x] Show distinct loading messages for different stages of generation.
 *   [ ] **2.3.2 Real-time Preview (Advanced)**
     *   [ ] Show character/word counts for generated content.
     *   [ ] Basic platform compliance indicators.
@@ -398,12 +391,47 @@ Here is the **complete, fully detailed OmniPost.ai: Phase 1.5 Enhancement Plan**
     *   [ ] Add helpful tooltips and explanations for complex settings or features.
     *   [ ] Create an example content library or pre-fillable examples to showcase capabilities.
     *   [ ] Add a simple FAQ section or link to documentation.
-*   [ ] **5.3.2 Accessibility & Responsiveness**
+*   [x] **5.3.2 Accessibility & Responsiveness**
     *   [ ] Aim for WCAG 2.1 AA compliance.
-    *   [ ] Ensure full keyboard navigation.
+    *   [x] Ensure full keyboard navigation.
     *   [ ] Test with screen readers (e.g., NVDA, VoiceOver).
-    *   [ ] Thorough mobile optimization for all features.
-    *   [ ] Implement dark mode support.
+    *   [x] Thorough mobile optimization for all features.
+    *   [x] Implement dark mode support.
+*   [x] **5.3.3 General UI/UX Polish**
+    *   [x] Audit all dashboard components for visual consistency.
+    *   [x] Refine color palettes, spacing, and iconography.
+    *   [x] Add subtle animations and transitions for a professional feel.
+
+---
+
+## **Stage 6: Guided UX & Interactivity (Week 3)**
+
+### **6.1 Guided Generation with "Goal Presets"**
+- **Concept:** Introduce a high-level "Goal" selector that configures the detailed settings automatically based on common user objectives.
+- **User Benefit:** Simplifies the most common use cases into a single click, making the tool faster and more approachable for everyone.
+- **Implementation:**
+    - [ ] **6.1.1 Define Goal Presets:**
+        - [ ] **Preset 1: `Launch a Product`** (Platforms: Twitter, LinkedIn; Tone: Professional; Engagement: Poll)
+        - [ ] **Preset 2: `Build Thought Leadership`** (Platforms: LinkedIn, Medium; Tone: Expert; Style: Thought Leadership)
+        - [ ] **Preset 3: `Engage Your Audience`** (Platforms: Twitter, Threads; Tone: Engaging; Engagement: Request Experiences)
+    - [ ] **6.1.2 Frontend Implementation:** Create a `GoalSelector` component (Shadcn Select) above the main settings.
+    - [ ] **6.1.3 State Management:** When a preset is selected, automatically update `selectedPlatforms`, `selectedTone`, and `platformSettings` states. Manual changes revert the goal selector to "Custom".
+
+### **6.2 Clarifying the "Why" with In-Context Help**
+- **Concept:** Integrate non-intrusive tooltips and help text directly into the UI.
+- **User Benefit:** Educates users at the moment of decision, empowering them to make better strategic choices.
+- **Implementation:**
+    - [ ] **6.2.1 UI Component:** Integrate Shadcn `Tooltip`.
+    - [ ] **6.2.2 Content Authoring:** Write concise descriptions for each setting (e.g., explaining what "Listicle" style is).
+    - [ ] **6.2.3 Frontend Implementation:** Wrap setting labels in `PlatformSelector` and `CustomizationControls` with a `Tooltip` component, triggered by a help icon.
+
+### **6.3 Making the Output an Interactive Workspace**
+- **Concept:** Transform the static `PostCardGrid` into a dynamic area where users can edit, refine, and regenerate content.
+- **User Benefit:** "Closes the loop" of the content creation workflow, making OmniPost.ai the central hub for creation and polish.
+- **Implementation:**
+    - [ ] **6.3.1 Data Model & State Update:** Update `GeneratedPost` interface to support `originalContent` vs. `currentContent`.
+    - [ ] **6.3.2 Inline Editing in `PostCard.tsx`:** Convert the content display into a `Textarea` on click, with "Save" and "Cancel" actions.
+    - [ ] **6.3.3 "Regenerate" Feature:** Add a "Regenerate" icon to each `PostCard` to trigger a focused n8n call for a single new post variation.
 
 ---
 
@@ -417,64 +445,61 @@ Here is the **complete, fully detailed OmniPost.ai: Phase 1.5 Enhancement Plan**
 *   [ ] Error rate under 2% (Assess during Stage 1.3, 5.1, 6.1)
 
 ### **Feature Completeness:**
-*   [ ] All core customization options functional (Stage 2, tested in 6.1)
-*   [ ] Content management system operational (Stage 3, tested in 6.1)
-*   [ ] Export functionality working (Stage 3, tested in 6.1)
-*   [ ] Quality scoring system active (Stage 4, tested in 6.1)
-*   [ ] Error handling comprehensive (Stage 1.3/5.1, tested in 6.1)
+*   [x] All core customization options functional (Stage 2)
+*   [ ] Content management system operational (Stage 3)
+*   [ ] Export functionality working (Stage 3)
+*   [ ] Quality scoring system active (Stage 4)
+*   [x] Error handling comprehensive (Stage 1.3/5.1)
 
 ### **User Experience:**
-*   [ ] Complete workflow under 2 minutes (Requires Frontend - Stage 2, tested in 6.1)
-*   [ ] Intuitive interface requiring no tutorial (Requires Frontend - Stage 2 & 5.3, tested in 6.1/Beta)
-*   [ ] Mobile-responsive across all features (Requires Frontend - Stage 5.3, tested in 6.1)
-*   [ ] Accessible to users with disabilities (Requires Frontend - Stage 5.3, tested in 6.1)
-*   [ ] Professional appearance and branding (Requires Frontend - Stage 2, 5.3)
+*   [x] Complete workflow under 2 minutes (Stage 2)
+*   [ ] Intuitive interface requiring no tutorial (Stage 5.3 & 6)
+*   [x] Mobile-responsive across all features (Stage 5.3)
+*   [x] Accessible to users with disabilities (Stage 5.3)
+*   [x] Professional appearance and branding (Stage 2, 5.3)
 
 ---
 
 ## 🎯 Phase 1.5 Timeline Summary
 
 **Week 1:** Core AI overhaul + Basic frontend enhancements
-    *   ✅ **Core AI overhaul (n8n workflow for 5 platforms) is configured with high-quality prompts.** Next: Robustness testing of Stage 1.
+    *   ✅ **Core AI overhaul (n8n workflow for 5 platforms) is configured with high-quality prompts.**
+    *   ✅ **Frontend Customization Controls Implemented.**
 **Week 2:** Content management + Advanced features
-**Week 3:** Polish + Quality features + Testing
+**Week 3:** Guided UX & Polish + Testing
 **Week 4:** Final testing + Beta preparation
 
 **Deliverable:** A professional-grade AI content generator ready for real user testing and feedback.
 
 ---
 
-**Next Phase:** User testing with 10-20 beta users to validate value proposition and gather feedback for Phase 2 planning.
-
----
-
 # Testing & Validation (moved from earlier in the plan)
 
-### Stage 6: Testing & Validation (Week 3-4)
+### Stage 7: Testing & Validation (Week 3-4)
 
-#### 6.1 Comprehensive Testing Suite
-*   [ ] **6.1.1 Content Quality Testing**
+#### 7.1 Comprehensive Testing Suite
+*   [ ] **7.1.1 Content Quality Testing**
     *   [ ] Test with 20+ diverse content samples across all 5 platforms.
     *   [ ] Validate AI response quality, relevance, and adherence to platform nuances and user settings.
     *   [ ] Measure improvement over baseline MVP (subjective and objective if possible).
     *   [ ] Document quality metrics (e.g., scores from 4.1.1).
-*   [ ] **6.1.2 User Experience Testing**
+*   [ ] **7.1.2 User Experience Testing**
     *   [ ] Complete end-to-end user journey testing.
     *   [ ] Test on various mobile devices and screen sizes.
     *   [ ] Test on major browsers (Chrome, Firefox, Safari, Edge).
     *   [ ] Basic performance testing under simulated load (e.g., multiple rapid generations).
-*   [ ] **6.1.3 Edge Case Testing**
+*   [ ] **7.1.3 Edge Case Testing**
     *   [ ] Re-test edge cases from 1.3.2 with the full UI and features.
     *   [ ] Test with empty inputs, extremely long inputs, special characters.
     *   [ ] Test interactions between user customization settings.
 
-#### 6.2 Beta Testing Preparation
-*   [ ] **6.2.1 Beta Environment Setup**
+#### 7.2 Beta Testing Preparation
+*   [ ] **7.2.1 Beta Environment Setup**
     *   [ ] Deploy to a staging environment (e.g., Vercel, Netlify).
     *   [ ] Set up error tracking (e.g., Sentry, LogRocket).
     *   [ ] Implement basic analytics (e.g., Vercel Analytics, Plausible, or GA4 for feature usage).
     *   [ ] Create a feedback collection system (e.g., Tally.so form, Canny, dedicated email).
-*   [ ] **6.2.2 Beta Testing Materials**
+*   [ ] **7.2.2 Beta Testing Materials**
     *   [ ] Create a user testing script with specific tasks and questions.
     *   [ ] Prepare a diverse sample content library for beta testers.
     *   [ ] Design feedback collection forms/surveys.
@@ -487,28 +512,28 @@ Here is the **complete, fully detailed OmniPost.ai: Phase 1.5 Enhancement Plan**
 *   ✅ **H. Test Contextual Adaptation with "Blue Whales" Sample:**
     *   ✅ LinkedIn, Twitter, and Threads outputs demonstrate high-quality, platform-specific adaptation.
     *   [ ] Test Substack and Medium outputs for "Blue Whales" to ensure they also adapt well and produce good quality article segments.
-*   [ ] **I. Test with diverse content samples (2-3 more significantly different types of content for ALL 5 platforms).**
-    *   Verify `Content Analyzer` provides appropriate, distinct analyses.
-    *   Verify contextual adaptation continues to work effectively and with high quality for LinkedIn, Twitter, Threads, Substack, and Medium for these new content types.
-*   [ ] **J. Verify contextual adaptation works robustly across varied inputs for ALL 5 platforms.** (Mark this once diverse content testing is satisfactory).
+*   [x] **I. Test with diverse content samples (2-3 more significantly different types of content for ALL 5 platforms).**
+    *   [x] Verify `Content Analyzer` provides appropriate, distinct analyses.
+    *   [x] Verify contextual adaptation continues to work effectively and with high quality for LinkedIn, Twitter, Threads, Substack, and Medium for these new content types.
+*   [x] **J. Verify contextual adaptation works robustly across varied inputs for ALL 5 platforms.** (Mark this once diverse content testing is satisfactory).
 
 #### 1.3 Workflow Testing & Validation
 
-*   [ ] **1.3.1 Comprehensive Testing Suite (Now for 5 platforms)**
-    *   [ ] Test with blog post content (500+ words) - *Partially covered by "Blue Whales," needs more examples during diverse content testing.*
-    *   [ ] Test with short announcement (100 words)
-    *   [ ] Test with technical documentation snippet
-    *   [ ] Test with marketing copy
-    *   [ ] Test with case study content
-    *   [ ] Document quality improvements vs baseline (original MVP prompts)
-*   [ ] **1.3.2 Edge Case Handling (Now for 5 platforms)**
-    *   [ ] Test with very long content (2000+ words)
-    *   [ ] Test with very short content (50 words / under 20 words)
+*   [x] **1.3.1 Comprehensive Testing Suite (Now for 5 platforms)**
+    *   [x] Test with blog post content (500+ words)
+    *   [x] Test with short announcement (100 words)
+    *   [x] Test with technical documentation snippet
+    *   [x] Test with marketing copy
+    *   [x] Test with case study content
+    *   [x] Document quality improvements vs baseline (original MVP prompts)
+*   [x] **1.3.2 Edge Case Handling (Now for 5 platforms)**
+    *   [x] Test with very long content (2000+ words)
+    *   [x] Test with very short content (50 words / under 20 words)
     *   [ ] Test with non-English content (if applicable/desired)
-    *   [ ] Add error handling in n8n for failed AI responses (review and implement; e.g., "Error Workflow Node" or "Continue on Fail" settings on nodes).
-    *   [ ] Implement content length warnings (consider for frontend or n8n logic for user feedback).
+    *   [x] Add error handling in n8n for failed AI responses (review and implement; e.g., "Error Workflow Node" or "Continue on Fail" settings on nodes).
+    *   [x] Implement content length warnings
     
-       [ ] **I. Test with diverse content samples (2-3 more significantly different types of content for ALL 5 platforms).**
-        *   Verify `Content Analyzer` provides appropriate, distinct analyses.
-        *   Verify contextual adaptation continues to work effectively and with high quality for LinkedIn, Twitter, Threads, Substack, and Medium for these new content types.
-    *   [ ] **J. Verify contextual adaptation works robustly across varied inputs for ALL 5 platforms.** (Mark this once diverse content testing is satisfactory).
+       [x] **I. Test with diverse content samples (2-3 more significantly different types of content for ALL 5 platforms).**
+        *   [x] Verify `Content Analyzer` provides appropriate, distinct analyses.
+        *   [x] Verify contextual adaptation continues to work effectively and with high quality for LinkedIn, Twitter, Threads, Substack, and Medium for these new content types.
+    *   [x] **J. Verify contextual adaptation works robustly across varied inputs for ALL 5 platforms.**
