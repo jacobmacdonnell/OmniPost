@@ -20,6 +20,10 @@ export default function GeneratorInput({
   isGenerating,
   placeholderText = "Paste your long-form content here... a blog post, an article, a transcript, etc.",
 }: GeneratorInputProps) {
+  const wordCount = inputText.trim() === "" ? 0 : inputText.trim().split(/\s+/).length
+  const charCount = inputText.length
+  const countColor = charCount < 50 ? "text-red-400" : charCount < 100 ? "text-yellow-400" : "text-green-400"
+
   return (
     <Card className="border-slate-800 bg-slate-900/60 backdrop-blur-sm shadow-lg text-white">
       <CardHeader>
@@ -40,14 +44,20 @@ export default function GeneratorInput({
             className="bg-slate-900/80 border-slate-700 text-slate-200 min-h-[150px] focus:ring-blue-500"
             disabled={isGenerating}
           />
-          <Button
-            onClick={onGenerate}
-            disabled={isGenerating || !inputText.trim()}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold"
-          >
-            <Sparkles className="mr-2 h-4 w-4" />
-            Generate Posts
-          </Button>
+          <div className="flex justify-between items-center mt-2">
+            <div className={`text-sm ${countColor} font-medium`}>
+              <span>{wordCount} Words / </span>
+              <span>{charCount} Characters</span>
+            </div>
+            <Button
+              onClick={onGenerate}
+              disabled={isGenerating || !inputText.trim()}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+            >
+              <Sparkles className="mr-2 h-4 w-4" />
+              Generate Posts
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>

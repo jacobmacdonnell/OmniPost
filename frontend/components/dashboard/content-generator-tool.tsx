@@ -7,9 +7,38 @@ import GeneratorInput from "./ui/GeneratorInput"
 import GenerationProgress from "./ui/GenerationProgress"
 import PostCardGrid from "./ui/PostCardGrid"
 import type { GeneratedPost } from "./ui/PostCard"
+import PlatformSelector from "./ui/PlatformSelector"
+import CustomizationControls from "./ui/CustomizationControls"
+
+export type Platform = "twitter" | "linkedin" | "threads" | "substack" | "medium"
+export type Tone = "professional" | "casual" | "expert" | "engaging" | "custom"
+export type Industry =
+  | "technology"
+  | "marketing"
+  | "finance"
+  | "healthcare"
+  | "education"
+  | "ecommerce"
+  | "saas"
+  | "consulting"
+  | "other"
+
+export interface PlatformSettings {
+  twitter: { threadMode: "auto" | "thread" }
+  linkedin: { includeQuestion: boolean }
+  threads: { emojiLevel: "none" | "minimal" | "moderate" }
+}
 
 export default function ContentGeneratorTool() {
   const [inputText, setInputText] = useState("")
+  const [selectedPlatforms, setSelectedPlatforms] = useState<Platform[]>(["twitter", "linkedin", "threads"])
+  const [selectedTone, setSelectedTone] = useState<Tone>("professional")
+  const [selectedIndustry, setSelectedIndustry] = useState<Industry>("technology")
+  const [platformSettings, setPlatformSettings] = useState<PlatformSettings>({
+    twitter: { threadMode: "auto" },
+    linkedin: { includeQuestion: true },
+    threads: { emojiLevel: "moderate" },
+  })
   const [generatedPosts, setGeneratedPosts] = useState<GeneratedPost[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -29,6 +58,14 @@ export default function ContentGeneratorTool() {
       setFeedback({
         type: "error",
         message: "Content is too short. Please provide at least 50 characters for better results.",
+      })
+      return
+    }
+
+    if (selectedPlatforms.length === 0) {
+      setFeedback({
+        type: "error",
+        message: "Please select at least one platform to generate content for.",
       })
       return
     }
@@ -77,7 +114,13 @@ export default function ContentGeneratorTool() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ longFormContent: inputText }),
+        body: JSON.stringify({
+          longFormContent: inputText,
+          platforms: selectedPlatforms,
+          userSelectedTone: selectedTone,
+          userSelectedIndustry: selectedIndustry,
+          platformSettings: platformSettings,
+        }),
       })
 
       if (progressInterval) {
@@ -184,6 +227,20 @@ export default function ContentGeneratorTool() {
         onGenerate={handleGenerate}
         isGenerating={isGenerating}
       />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <PlatformSelector
+          selectedPlatforms={selectedPlatforms}
+          onSelectionChange={setSelectedPlatforms}
+          settings={platformSettings}
+          onSettingsChange={setPlatformSettings}
+        />
+        <CustomizationControls
+          selectedTone={selectedTone}
+          onToneChange={setSelectedTone}
+          selectedIndustry={selectedIndustry}
+          onIndustryChange={setSelectedIndustry}
+        />
+      </div>
       <div className="px-4">
         <GenerationProgress
             isGenerating={isGenerating}
