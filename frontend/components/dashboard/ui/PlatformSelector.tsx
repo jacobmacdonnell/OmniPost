@@ -60,164 +60,110 @@ export default function PlatformSelector({
     const commonSelectTriggerStyle = "w-full h-8 text-xs bg-slate-700/60 border-slate-600 focus:ring-blue-500"
     const commonSelectContentStyle = "bg-slate-800 border-slate-700 text-white"
     const commonLabelStyle = "text-xs text-slate-400 mb-1"
+    const commonContainerStyle = "mt-4 pt-4 border-t border-slate-700/60 space-y-3"
+    
+    const settingsForPlatform = settings[platform]
 
+    const baseOptions = (
+      <div className="space-y-3">
+        {/* Style Dropdown */}
+        <div>
+          <Label htmlFor={`${platform}-style`} className={commonLabelStyle}>Post Style</Label>
+          <Select
+            value={settingsForPlatform.style}
+            onValueChange={(value: "standard" | "listicle" | "thought_leadership" | "qa") => handleSettingChange(platform, "style", value)}
+          >
+            <SelectTrigger id={`${platform}-style`} className={commonSelectTriggerStyle}><SelectValue /></SelectTrigger>
+            <SelectContent className={commonSelectContentStyle}>
+              <SelectItem value="standard">Standard</SelectItem>
+              <SelectItem value="listicle">Listicle</SelectItem>
+              <SelectItem value="thought_leadership">Thought Leadership</SelectItem>
+              <SelectItem value="qa">Q&A</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        {/* Engagement Dropdown */}
+        <div>
+          <Label htmlFor={`${platform}-engagement`} className={commonLabelStyle}>Engagement Tactic</Label>
+          <Select
+            value={settingsForPlatform.engagement}
+            onValueChange={(value: "none" | "question" | "poll" | "experiences") => handleSettingChange(platform, "engagement", value)}
+          >
+            <SelectTrigger id={`${platform}-engagement`} className={commonSelectTriggerStyle}><SelectValue /></SelectTrigger>
+            <SelectContent className={commonSelectContentStyle}>
+              <SelectItem value="none">None</SelectItem>
+              <SelectItem value="question">Ask a Question</SelectItem>
+              <SelectItem value="poll">Suggest a Poll</SelectItem>
+              <SelectItem value="experiences">Request Experiences</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        {/* Emoji Level Dropdown */}
+        <div>
+          <Label htmlFor={`${platform}-emoji`} className={commonLabelStyle}>Emoji Level</Label>
+          <Select
+            value={settingsForPlatform.emojiLevel}
+            onValueChange={(value: "none" | "minimal" | "moderate" | "high") => handleSettingChange(platform, "emojiLevel", value)}
+          >
+            <SelectTrigger id={`${platform}-emoji`} className={commonSelectTriggerStyle}><SelectValue /></SelectTrigger>
+            <SelectContent className={commonSelectContentStyle}>
+              <SelectItem value="none">None</SelectItem>
+              <SelectItem value="minimal">Minimal</SelectItem>
+              <SelectItem value="moderate">Moderate</SelectItem>
+              <SelectItem value="high">High</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+    )
+
+    let deeperOptions = null
     switch (platform) {
       case "twitter":
-        return (
-          <div className="mt-3 pl-8 space-y-2">
-            <Label htmlFor="twitter-format" className={commonLabelStyle}>
-              Post Format
-            </Label>
+        deeperOptions = (
+          <div>
+            <Label htmlFor="twitter-format" className={commonLabelStyle}>Post Format</Label>
             <Select
               value={settings.twitter.format}
-              onValueChange={(value: "auto" | "force_thread" | "single_tweet") =>
-                handleSettingChange("twitter", "format", value)
-              }
+              onValueChange={(value: "auto" | "force_thread" | "single_tweet") => handleSettingChange("twitter", "format", value)}
             >
-              <SelectTrigger id="twitter-format" className={commonSelectTriggerStyle}>
-                <SelectValue />
-              </SelectTrigger>
+              <SelectTrigger id="twitter-format" className={commonSelectTriggerStyle}><SelectValue /></SelectTrigger>
               <SelectContent className={commonSelectContentStyle}>
-                <SelectItem value="auto">Auto</SelectItem>
+                <SelectItem value="auto">Auto-detect</SelectItem>
                 <SelectItem value="force_thread">Force Thread</SelectItem>
                 <SelectItem value="single_tweet">Single Tweet</SelectItem>
               </SelectContent>
             </Select>
           </div>
         )
-      case "linkedin":
-        return (
-          <div className="mt-3 pl-8 space-y-3">
-            <div>
-              <Label htmlFor="linkedin-style" className={commonLabelStyle}>
-                Post Style
-              </Label>
-              <Select
-                value={settings.linkedin.style}
-                onValueChange={(value: "standard" | "thought_leadership" | "listicle") =>
-                  handleSettingChange("linkedin", "style", value)
-                }
-              >
-                <SelectTrigger id="linkedin-style" className={commonSelectTriggerStyle}>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className={commonSelectContentStyle}>
-                  <SelectItem value="standard">Standard</SelectItem>
-                  <SelectItem value="thought_leadership">Thought Leadership</SelectItem>
-                  <SelectItem value="listicle">Listicle</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="linkedin-include-question"
-                checked={settings.linkedin.includeQuestion}
-                onCheckedChange={(checked) => handleSettingChange("linkedin", "includeQuestion", !!checked)}
-              />
-              <Label htmlFor="linkedin-include-question" className="text-xs text-slate-400">
-                Include Engaging Question
-              </Label>
-            </div>
-          </div>
-        )
-      case "threads":
-        return (
-          <div className="mt-3 pl-8 space-y-3">
-            <div>
-              <Label htmlFor="threads-emoji-usage" className={commonLabelStyle}>
-                Emoji Usage
-              </Label>
-              <Select
-                value={settings.threads.emojiUsage}
-                onValueChange={(value: "none" | "minimal" | "moderate" | "high") =>
-                  handleSettingChange("threads", "emojiUsage", value)
-                }
-              >
-                <SelectTrigger id="threads-emoji-usage" className={commonSelectTriggerStyle}>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className={commonSelectContentStyle}>
-                  <SelectItem value="none">None</SelectItem>
-                  <SelectItem value="minimal">Minimal</SelectItem>
-                  <SelectItem value="moderate">Moderate</SelectItem>
-                  <SelectItem value="high">High</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label htmlFor="threads-engagement-prompt" className={commonLabelStyle}>
-                Engagement Prompt
-              </Label>
-              <Select
-                value={settings.threads.engagementPrompt}
-                onValueChange={(value: "none" | "ask_question" | "request_experiences") =>
-                  handleSettingChange("threads", "engagementPrompt", value)
-                }
-              >
-                <SelectTrigger id="threads-engagement-prompt" className={commonSelectTriggerStyle}>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className={commonSelectContentStyle}>
-                  <SelectItem value="none">None</SelectItem>
-                  <SelectItem value="ask_question">Ask a Question</SelectItem>
-                  <SelectItem value="request_experiences">Request Experiences</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        )
+        break
       case "substack":
       case "medium":
-        const settingsKey = platform
-        const isSubstack = settingsKey === "substack"
-        const angleValue = settings[settingsKey].repurposeAngle
-        const suggestValue = isSubstack
-          ? settings.substack.suggestTitles
-          : settings.medium.suggestHeadlines
-
-        return (
-          <div className="mt-3 pl-8 space-y-3">
-            <div>
-              <Label htmlFor={`${settingsKey}-repurpose-angle`} className={commonLabelStyle}>
-                Repurpose Angle
-              </Label>
-              <Select
-                value={angleValue}
-                onValueChange={(value: "summary" | "deep_dive" | "opinion_piece") =>
-                  handleSettingChange(settingsKey, "repurposeAngle", value)
-                }
-              >
-                <SelectTrigger id={`${settingsKey}-repurpose-angle`} className={commonSelectTriggerStyle}>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className={commonSelectContentStyle}>
-                  <SelectItem value="summary">Summary</SelectItem>
-                  <SelectItem value="deep_dive">Deep Dive</SelectItem>
-                  <SelectItem value="opinion_piece">Opinion Piece</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id={`${settingsKey}-suggest-titles`}
-                checked={suggestValue}
-                onCheckedChange={(checked) => {
-                  if (isSubstack) {
-                    handleSettingChange("substack", "suggestTitles", !!checked)
-                  } else {
-                    handleSettingChange("medium", "suggestHeadlines", !!checked)
-                  }
-                }}
-              />
-              <Label htmlFor={`${settingsKey}-suggest-titles`} className="text-xs text-slate-400">
-                Suggest Titles/Headlines
-              </Label>
-            </div>
+        const label = platform === 'substack' ? "Suggest Titles" : "Suggest Headlines"
+        deeperOptions = (
+          <div>
+            <Label htmlFor={`${platform}-title`} className={commonLabelStyle}>{label}</Label>
+            <Select
+              value={settings[platform].generateTitle ? 'yes' : 'no'}
+              onValueChange={(value) => handleSettingChange(platform, "generateTitle", value === 'yes')}
+            >
+              <SelectTrigger id={`${platform}-title`} className={commonSelectTriggerStyle}><SelectValue /></SelectTrigger>
+              <SelectContent className={commonSelectContentStyle}>
+                <SelectItem value="yes">Yes</SelectItem>
+                <SelectItem value="no">No</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         )
-      default:
-        return null
+        break
     }
+
+    return (
+      <div className="mt-3 pl-8 space-y-3">
+        {baseOptions}
+        {deeperOptions && <div className={commonContainerStyle}>{deeperOptions}</div>}
+      </div>
+    )
   }
 
   return (

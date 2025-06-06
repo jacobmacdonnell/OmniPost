@@ -23,26 +23,31 @@ export type Industry =
   | "consulting"
   | "other"
 
+// Define the base settings that apply to all platforms
+interface BasePlatformSettings {
+  style: "standard" | "listicle" | "thought_leadership" | "qa"
+  engagement: "none" | "question" | "poll" | "experiences"
+  emojiLevel: "none" | "minimal" | "moderate" | "high"
+}
+
 export interface PlatformSettings {
-  twitter: {
+  twitter: BasePlatformSettings & {
     format: "auto" | "force_thread" | "single_tweet"
   }
-  linkedin: {
-    style: "standard" | "thought_leadership" | "listicle"
-    includeQuestion: boolean
+  linkedin: BasePlatformSettings
+  threads: BasePlatformSettings
+  substack: BasePlatformSettings & {
+    generateTitle: boolean
   }
-  threads: {
-    emojiUsage: "none" | "minimal" | "moderate" | "high"
-    engagementPrompt: "none" | "ask_question" | "request_experiences"
+  medium: BasePlatformSettings & {
+    generateTitle: boolean
   }
-  substack: {
-    repurposeAngle: "summary" | "deep_dive" | "opinion_piece"
-    suggestTitles: boolean
-  }
-  medium: {
-    repurposeAngle: "summary" | "deep_dive" | "opinion_piece"
-    suggestHeadlines: boolean
-  }
+}
+
+const defaultBaseSettings: BasePlatformSettings = {
+  style: "standard",
+  engagement: "question",
+  emojiLevel: "minimal",
 }
 
 export default function ContentGeneratorTool() {
@@ -51,11 +56,25 @@ export default function ContentGeneratorTool() {
   const [selectedTone, setSelectedTone] = useState<Tone>("professional")
   const [selectedIndustry, setSelectedIndustry] = useState<Industry>("technology")
   const [platformSettings, setPlatformSettings] = useState<PlatformSettings>({
-    twitter: { format: "auto" },
-    linkedin: { style: "standard", includeQuestion: true },
-    threads: { emojiUsage: "moderate", engagementPrompt: "ask_question" },
-    substack: { repurposeAngle: "summary", suggestTitles: true },
-    medium: { repurposeAngle: "summary", suggestHeadlines: true },
+    twitter: { 
+      ...defaultBaseSettings,
+      format: "auto" 
+    },
+    linkedin: defaultBaseSettings,
+    threads: { 
+      ...defaultBaseSettings,
+      emojiLevel: "moderate" 
+    },
+    substack: { 
+      ...defaultBaseSettings,
+      style: "thought_leadership",
+      generateTitle: true 
+    },
+    medium: { 
+      ...defaultBaseSettings,
+      style: "thought_leadership",
+      generateTitle: true 
+    },
   })
   const [generatedPosts, setGeneratedPosts] = useState<GeneratedPost[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
