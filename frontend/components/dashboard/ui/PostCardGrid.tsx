@@ -12,19 +12,16 @@ interface PostCardGridProps {
 export default function PostCardGrid({ posts, isGenerating }: PostCardGridProps) {
   if (posts.length === 0 && !isGenerating) {
     return (
-      <Card className="border-slate-800 bg-slate-900/60 backdrop-blur-sm shadow-lg text-white text-center">
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center justify-center">
-            <Sparkles className="h-5 w-5 text-slate-400 mr-2" />
+      <Card className="border-2 border-dashed border-slate-700/80 bg-slate-900/50 backdrop-blur-sm shadow-lg text-white text-center flex items-center justify-center min-h-[200px]">
+        <div className="p-8">
+          <Sparkles className="h-10 w-10 text-slate-500 mx-auto mb-4" />
+          <h3 className="text-xl font-semibold text-slate-300">
             Your Generated Posts Will Appear Here
-          </CardTitle>
-          <CardDescription className="text-slate-400 pt-1">
+          </h3>
+          <p className="text-slate-400 mt-2">
             Once you generate content, the platform-optimized posts will be displayed below.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-slate-500">Ready to start?</p>
-        </CardContent>
+          </p>
+        </div>
       </Card>
     )
   }
@@ -34,14 +31,20 @@ export default function PostCardGrid({ posts, isGenerating }: PostCardGridProps)
   }
 
   return (
-    <div>
-      <h2 className="text-xl font-semibold text-slate-100 mb-4 flex items-center">
-        <Sparkles className="h-5 w-5 text-purple-400 mr-2" />
+    <div className="animate-fade-in">
+      <h2 className="text-2xl font-bold text-slate-100 mb-6 flex items-center">
+        <Sparkles className="h-6 w-6 text-green-400 mr-3" />
         Generated Content
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {posts.map((post) => (
-          <PostCard key={post.platform} post={post} />
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {posts.map((post, index) => (
+          <div
+            key={post.platform}
+            className="animate-slide-up"
+            style={{ animationDelay: `${index * 100}ms` }}
+          >
+            <PostCard post={post} />
+          </div>
         ))}
       </div>
     </div>

@@ -20,36 +20,27 @@ export default function DashboardLayout({ children, pageTitle = "Dashboard" }: D
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-950 text-white">
+    <div className="flex min-h-screen w-full bg-slate-950 text-white">
       <Sidebar isMobileOpen={isMobileSidebarOpen} toggleSidebar={toggleMobileSidebar} />
-      <main className="flex-1 sm:ml-64 transition-all">
-        {/* Top bar within the main content area */}
-        <header className="sticky top-0 z-30 bg-slate-950/75 backdrop-blur-lg border-b border-slate-800">
-          <div className="px-4 sm:px-6 py-4 h-16 flex items-center justify-between">
-            {/* Hamburger Menu for mobile */}
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="sm:hidden mr-2 text-slate-300 hover:bg-slate-800 hover:text-white"
+      <div className="flex flex-col flex-1 sm:ml-64 transition-all duration-300 ease-in-out">
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b border-slate-800 bg-slate-950/75 px-4 sm:px-6 backdrop-blur-lg">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="sm:hidden text-slate-400 hover:bg-slate-800/80 hover:text-white"
               onClick={toggleMobileSidebar}
             >
-              <Menu size={24} />
+              <Menu className="h-6 w-6" />
             </Button>
-            
-            {/* Page Title - ensure it doesn't overlap with hamburger on very small screens if necessary */}
-            <h1 className="text-lg sm:text-xl font-semibold text-slate-100 truncate">{pageTitle}</h1>
-            
-            <div className="ml-auto"> {/* Ensure UserProfileBadge is pushed to the right */}
-              <UserProfileBadge />
-            </div>
+            <h1 className="text-xl font-semibold text-slate-100">{pageTitle}</h1>
           </div>
+          <UserProfileBadge />
         </header>
-        
-        {/* Page content rendered here */}
-        <div className="p-4 sm:p-6">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
           {children}
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   )
 } 

@@ -22,13 +22,13 @@ export default function GeneratorInput({
 }: GeneratorInputProps) {
   const wordCount = inputText.trim() === "" ? 0 : inputText.trim().split(/\s+/).length
   const charCount = inputText.length
-  const countColor = charCount < 50 ? "text-red-400" : charCount < 100 ? "text-yellow-400" : "text-green-400"
+  const countColor = charCount < 50 ? "text-yellow-400" : "text-green-400"
 
   return (
     <Card className="border-slate-800 bg-slate-900/60 backdrop-blur-sm shadow-lg text-white">
       <CardHeader>
         <CardTitle className="text-lg flex items-center">
-          <FileText className="h-5 w-5 text-blue-400 mr-2" />
+          <FileText className="h-5 w-5 text-sky-400 mr-2" />
           Input Content
         </CardTitle>
         <CardDescription className="text-slate-400 pt-1">
@@ -41,21 +41,20 @@ export default function GeneratorInput({
             placeholder={placeholderText}
             value={inputText}
             onChange={(e) => onInputChange(e.target.value)}
-            className="bg-slate-900/80 border-slate-700 text-slate-200 min-h-[150px] focus:ring-blue-500"
+            className="bg-slate-800/80 border-slate-700 text-slate-200 min-h-[180px] text-base rounded-md focus:ring-sky-500 focus:border-sky-500 transition-all duration-300"
             disabled={isGenerating}
           />
           <div className="flex justify-between items-center mt-2">
-            <div className={`text-sm ${countColor} font-medium`}>
-              <span>{wordCount} Words / </span>
-              <span>{charCount} Characters</span>
+            <div className={`text-sm ${countColor} font-mono`}>
+              <span>{wordCount} Words</span> / <span>{charCount} Characters</span>
             </div>
             <Button
               onClick={onGenerate}
               disabled={isGenerating || !inputText.trim()}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+              className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg transform transition-all duration-200 ease-in-out hover:scale-105 disabled:bg-slate-600 disabled:text-slate-400 disabled:cursor-not-allowed disabled:transform-none"
             >
-              <Sparkles className="mr-2 h-4 w-4" />
-              Generate Posts
+              <Sparkles className="mr-2 h-5 w-5 animate-pulse" />
+              {isGenerating ? "Generating..." : "Generate Posts"}
             </Button>
           </div>
         </div>

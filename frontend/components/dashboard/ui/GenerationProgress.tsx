@@ -25,32 +25,33 @@ export default function GenerationProgress({ isGenerating, progress, feedback }:
   return (
     <>
       {isGenerating && (
-        <div className="w-full space-y-3">
-          <div className="flex items-center justify-between text-sm text-slate-300">
+        <div className="w-full space-y-3 transition-opacity duration-500 ease-in-out">
+          <div className="flex items-center justify-between text-sm font-medium text-slate-300">
             <span className="flex items-center">
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Loader2 className="mr-2 h-4 w-4 animate-spin text-sky-400" />
               {getProgressMessage(progress)}
             </span>
-            <span>{Math.round(progress)}%</span>
+            <span className="font-mono">{Math.round(progress)}%</span>
           </div>
-          <Progress value={progress} className="h-2 bg-slate-700/50 border border-slate-700" />
+          <Progress value={progress} className="h-2 [&>div]:bg-green-500 bg-slate-700/50 border border-slate-700" />
         </div>
       )}
       {feedback.type && (
         <Alert
           variant={feedback.type === "error" ? "destructive" : "default"}
-          className={
-            feedback.type === "success"
-              ? "bg-green-500/10 border-green-500/30 text-green-300"
-              : "bg-red-500/10 border-red-500/30 text-red-300"
-          }
+          className={`
+            ${feedback.type === "success"
+              ? "bg-green-900/50 border-green-700/60 text-green-300"
+              : "bg-red-900/50 border-red-700/60 text-red-300"}
+            mt-4 animate-fade-in
+          `}
         >
           {feedback.type === "success" ? (
-            <CheckCircle className="h-4 w-4" />
+            <CheckCircle className="h-5 w-5" />
           ) : (
-            <AlertCircle className="h-4 w-4" />
+            <AlertCircle className="h-5 w-5" />
           )}
-          <AlertDescription>{feedback.message}</AlertDescription>
+          <AlertDescription className="font-semibold">{feedback.message}</AlertDescription>
         </Alert>
       )}
     </>

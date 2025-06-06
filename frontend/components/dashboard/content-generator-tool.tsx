@@ -3,12 +3,12 @@
 import { useState } from "react"
 import { useToast } from "@/hooks/use-toast"
 import { cn } from "@/lib/utils"
-import GeneratorInput from "./ui/GeneratorInput"
-import GenerationProgress from "./ui/GenerationProgress"
-import PostCardGrid from "./ui/PostCardGrid"
-import type { GeneratedPost } from "./ui/PostCard"
-import PlatformSelector from "./ui/PlatformSelector"
-import CustomizationControls from "./ui/CustomizationControls"
+import GeneratorInput from "@/components/dashboard/ui/GeneratorInput"
+import GenerationProgress from "@/components/dashboard/ui/GenerationProgress"
+import PostCardGrid from "@/components/dashboard/ui/PostCardGrid"
+import type { GeneratedPost } from "@/components/dashboard/ui/PostCard"
+import PlatformSelector from "@/components/dashboard/ui/PlatformSelector"
+import CustomizationControls from "@/components/dashboard/ui/CustomizationControls"
 
 export type Platform = "twitter" | "linkedin" | "threads" | "substack" | "medium"
 export type Tone = "professional" | "casual" | "expert" | "engaging" | "custom"
@@ -24,9 +24,25 @@ export type Industry =
   | "other"
 
 export interface PlatformSettings {
-  twitter: { threadMode: "auto" | "thread" }
-  linkedin: { includeQuestion: boolean }
-  threads: { emojiLevel: "none" | "minimal" | "moderate" }
+  twitter: {
+    format: "auto" | "force_thread" | "single_tweet"
+  }
+  linkedin: {
+    style: "standard" | "thought_leadership" | "listicle"
+    includeQuestion: boolean
+  }
+  threads: {
+    emojiUsage: "none" | "minimal" | "moderate" | "high"
+    engagementPrompt: "none" | "ask_question" | "request_experiences"
+  }
+  substack: {
+    repurposeAngle: "summary" | "deep_dive" | "opinion_piece"
+    suggestTitles: boolean
+  }
+  medium: {
+    repurposeAngle: "summary" | "deep_dive" | "opinion_piece"
+    suggestHeadlines: boolean
+  }
 }
 
 export default function ContentGeneratorTool() {
@@ -35,9 +51,11 @@ export default function ContentGeneratorTool() {
   const [selectedTone, setSelectedTone] = useState<Tone>("professional")
   const [selectedIndustry, setSelectedIndustry] = useState<Industry>("technology")
   const [platformSettings, setPlatformSettings] = useState<PlatformSettings>({
-    twitter: { threadMode: "auto" },
-    linkedin: { includeQuestion: true },
-    threads: { emojiLevel: "moderate" },
+    twitter: { format: "auto" },
+    linkedin: { style: "standard", includeQuestion: true },
+    threads: { emojiUsage: "moderate", engagementPrompt: "ask_question" },
+    substack: { repurposeAngle: "summary", suggestTitles: true },
+    medium: { repurposeAngle: "summary", suggestHeadlines: true },
   })
   const [generatedPosts, setGeneratedPosts] = useState<GeneratedPost[]>([])
   const [isGenerating, setIsGenerating] = useState(false)

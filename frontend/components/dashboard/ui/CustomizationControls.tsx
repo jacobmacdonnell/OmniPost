@@ -44,6 +44,10 @@ export default function CustomizationControls({
   selectedIndustry,
   onIndustryChange,
 }: CustomizationControlsProps) {
+  const commonSelectTriggerStyle = "w-full h-10 text-sm bg-slate-700/60 border-slate-600 focus:ring-blue-500"
+  const commonSelectContentStyle = "bg-slate-800 border-slate-700 text-white"
+  const commonLabelStyle = "text-sm text-slate-300 mb-1"
+  
   return (
     <Card className="border-slate-800 bg-slate-900/60 backdrop-blur-sm shadow-lg text-white">
       <CardHeader>
@@ -52,14 +56,14 @@ export default function CustomizationControls({
           Customize AI
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-6 pt-6">
         <div className="space-y-2">
-          <Label htmlFor="tone-select" className="text-slate-400">Tone of Voice</Label>
+          <Label htmlFor="tone-select" className={commonLabelStyle}>Tone of Voice</Label>
           <Select value={selectedTone} onValueChange={onToneChange}>
-            <SelectTrigger id="tone-select" className="w-full bg-slate-800 border-slate-700">
+            <SelectTrigger id="tone-select" className={commonSelectTriggerStyle}>
               <SelectValue placeholder="Select a tone" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-800 border-slate-700 text-white">
+            <SelectContent className={commonSelectContentStyle}>
               {toneOptions.map((option) => (
                 <SelectItem key={option.id} value={option.id} className="cursor-pointer focus:bg-slate-700">
                   {option.name}
@@ -69,12 +73,12 @@ export default function CustomizationControls({
           </Select>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="industry-select" className="text-slate-400">Industry / Niche</Label>
+          <Label htmlFor="industry-select" className={commonLabelStyle}>Industry / Niche</Label>
           <Select value={selectedIndustry} onValueChange={onIndustryChange}>
-            <SelectTrigger id="industry-select" className="w-full bg-slate-800 border-slate-700">
+            <SelectTrigger id="industry-select" className={commonSelectTriggerStyle}>
               <SelectValue placeholder="Select an industry" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-800 border-slate-700 text-white">
+            <SelectContent className={commonSelectContentStyle}>
               {industryOptions.map((option) => (
                 <SelectItem key={option.id} value={option.id} className="cursor-pointer focus:bg-slate-700">
                   {option.name}
